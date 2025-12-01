@@ -1,0 +1,4593 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <title>Edukuis SMP/MTS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Semua kode CSS yang ada sebelumnya tetap sama */
+    :root{
+      --bg1:#f4fbff; --card:#fff; --accent:#0b63b8; --accent2:#7b3cff; --muted:#6b7b8c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(160deg,var(--bg1),#ffffff); color:#0b2540;
+      padding:28px; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      transition: background 0.5s ease;
+    }
+    .app{ width:100%; max-width:1150px; }
+    .card{ background:var(--card); border-radius:14px; padding:20px; box-shadow:0 10px 30px rgba(11,37,64,0.06); margin-bottom:18px; }
+    h1{ margin:0 0 8px; font-size:22px; }
+    .logo-container { display: flex; align-items: center; gap: 12px; }
+    .logo{ width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; background: linear-gradient(135deg, var(--accent), var(--accent2)); font-size: 24px; }
+    .logo-text{ font-size:20px; font-weight:800; color:var(--accent); }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; }
+    button{ padding:10px 14px; border-radius:10px; border:none; cursor:pointer; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:white; font-weight:700; transition: all 0.3s ease; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    button.ghost{ background:transparent; color:var(--accent); border:1px solid rgba(11,99,184,0.12); }
+    button.ghost:hover { background: rgba(11,99,184,0.08); }
+    input,select,textarea { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #e6eef7; margin-top:8px; font-size:14px; }
+    label{ display:block; margin-top:12px; font-weight:700; color:var(--muted); }
+    .small{ font-size:13px; color:var(--muted); }
+    #mapelGrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:12px; }
+    .mapelCard{ padding:14px; border-radius:10px; background:linear-gradient(180deg,#fbfeff,#ffffff); text-align:center; box-shadow:0 6px 14px rgba(10,30,60,0.04); cursor:pointer; border:1px solid rgba(6,77,123,0.03); transition: all 0.3s ease; }
+    .mapelCard:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10,30,60,0.1); }
+    .mapelCard.disabled{ opacity:0.6; cursor:not-allowed; }
+    .materiGrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-top:14px; }
+    .materiCard{ background:#fbfdff; border-radius:12px; padding:14px; border:1px solid rgba(11,37,64,0.04); display:flex; gap:12px; align-items:center; min-height:96px; transition: all 0.3s ease; cursor: pointer; }
+    .materiCard:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10,30,60,0.1); }
+    .materiIcon{ width:68px; height:68px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--accent); background:linear-gradient(180deg,#ffffff,#f0f7ff); }
+    .materiBody h3{ margin:0 0 6px; font-size:18px; }
+    .materiBody p{ margin:0; color:var(--muted); font-size:14px; line-height:1.4; }
+    .options button{ display:block; width:100%; text-align:left; margin-top:8px; background:#f4f7fb; color:#0b2540; border-radius:8px; padding:10px; border:1px solid #e3eef9; }
+    .timer{ font-weight:800; color:var(--accent); }
+    .center{ text-align:center; }
+    .hidden{ display:none; }
+    table{ width:100%; border-collapse:collapse; margin-top:8px; }
+    th,td{ padding:8px; border:1px solid #eef5fb; text-align:left; font-size:14px; vertical-align:middle; }
+    th{ background:#fbfdff; font-weight:700; }
+    .tabs{ display:flex; gap:10px; margin-bottom:12px; }
+    .tab{ padding:8px 12px; border-radius:10px; background:#f3f6fb; color:var(--muted); cursor:pointer; transition: all 0.3s ease; }
+    .tab:hover { background: #e8eef7; }
+    .tab.active{ background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; }
+    footer.small{ text-align:center; color:#7a8896; margin-top:8px; font-size:13px; }
+    .level-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+    .level-low { background: #e6f7ff; color: #1890ff; }
+    .level-moderate { background: #f6ffed; color: #52c41a; }
+    .level-hots { background: #fff2e8; color: #fa8c16; }
+    .setting-item {
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #e8f4ff;
+    }
+    .setting-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eef5fb;
+    }
+    .list-item:last-child {
+      border-bottom: none;
+    }
+    
+    /* STYLE UNTUK KELOLA MATERI */
+    .kelola-materi-container {
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .kelola-materi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .mapel-list, .materi-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+    
+    .mapel-item, .materi-item {
+      border: 1px solid #eef5fb;
+      border-radius: 8px;
+      padding: 12px;
+      background: linear-gradient(180deg, #ffffff, #f9fbff);
+      border-left: 4px solid #0b63b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .mapel-item:hover, .materi-item:hover {
+      background: linear-gradient(180deg, #f0f7ff, #ffffff);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .mapel-item h4, .materi-item h4 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: #0b2540;
+    }
+    
+    .mapel-item p, .materi-item p {
+      margin: 0 0 10px 0;
+      font-size: 13px;
+      color: #6b7b8c;
+    }
+    
+    .materi-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    
+    .status-active {
+      background: #e6f7e6;
+      color: #52c41a;
+    }
+    
+    .status-inactive {
+      background: #f5f5f5;
+      color: #8c8c8c;
+    }
+    
+    .soal-item {
+      border: 1px solid #eef5fb;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: #f9fbff;
+    }
+    
+    .soal-pertanyaan {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .soal-opsi {
+      margin-left: 20px;
+      margin-bottom: 5px;
+    }
+    
+    .soal-jawaban-benar {
+      background: #e6f7e6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .close:hover {
+      color: black;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .back-button {
+      background: #6c757d;
+      margin-bottom: 15px;
+    }
+    
+    .error-message {
+      color: #b02a37;
+      font-size: 13px;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    .input-error {
+      border-color: #b02a37;
+    }
+    
+    /* STYLE UNTUK PENGATURAN WARNA BACKGROUND */
+    .color-picker-container {
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    
+    .color-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .color-option {
+      width: 100%;
+      height: 60px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      transition: transform 0.2s;
+    }
+    
+    .color-option:hover {
+      transform: scale(1.05);
+    }
+    
+    .color-option.active {
+      border: 3px solid #0b2540;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    
+    .settings-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 100;
+      transition: transform 0.3s;
+    }
+    
+    .settings-toggle:hover {
+      transform: scale(1.1);
+    }
+    
+    .settings-panel {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      z-index: 99;
+      transform: translateY(20px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    
+    .settings-panel.active {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .settings-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0b2540;
+      margin: 0;
+    }
+    
+    .close-settings {
+      color: #6b7b8c;
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+    
+    .close-settings:hover {
+      background: #f3f6fb;
+    }
+    
+    /* STYLE UNTUK PENGATURAN OPSI JAWABAN */
+    .opsi-container {
+      margin-bottom: 15px;
+    }
+    
+    .opsi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .opsi-controls {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .opsi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .opsi-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .opsi-label {
+      width: 30px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    
+    .opsi-input {
+      flex: 1;
+    }
+    
+    .opsi-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .opsi-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    
+    .opsi-add {
+      background: #e6f7e6;
+      color: #52c41a;
+    }
+    
+    .opsi-remove {
+      background: #fff2e8;
+      color: #fa8c16;
+    }
+    
+    /* STYLE UNTUK HALAMAN LOGO YANG CENTER */
+    .logo-page-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 70vh;
+    }
+    
+    .logo-page-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* STYLE UNTUK EKSPOR EXCEL */
+    .excel-export-section {
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid #e8f4ff;
+    }
+    
+    .excel-preview {
+      margin-top: 15px;
+      overflow: auto;
+      max-height: 300px;
+      border: 1px solid #eef5fb;
+      border-radius: 8px;
+      background: white;
+    }
+    
+    .excel-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    
+    .excel-table th {
+      background: #f0f7ff;
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+      font-weight: bold;
+    }
+    
+    .excel-table td {
+      padding: 6px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    
+    .excel-table tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    
+    /* STYLE UNTUK PANEL ADMIN */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .admin-stat-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+    
+    .admin-stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .admin-stat-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      color: var(--muted);
+    }
+    
+    .admin-stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    
+    .admin-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .admin-tool-card {
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid #e8f4ff;
+      transition: all 0.3s ease;
+    }
+    
+    .admin-tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .admin-danger-btn {
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+    }
+    
+    .admin-warning-btn {
+      background: linear-gradient(90deg, #f9ca24, #f0932b);
+      color: #000;
+    }
+    
+    /* PERBAIKAN STYLE UNTUK TOMBOL LOGOUT */
+    .logout-btn {
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24) !important;
+      color: white !important;
+      border: none !important;
+      padding: 8px 16px !important;
+      font-size: 14px !important;
+      cursor: pointer !important;
+      z-index: 1;
+      position: relative;
+    }
+    
+    .logout-btn:hover {
+      background: linear-gradient(90deg, #ff5252, #e64a19) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    }
+
+    /* STYLE UNTUK KELOLA LOGIN */
+    .login-management-container {
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .login-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eef5fb;
+      padding-bottom: 10px;
+    }
+    
+    .login-tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      background: #f3f6fb;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .login-tab.active {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: white;
+    }
+    
+    .login-content {
+      display: none;
+    }
+    
+    .login-content.active {
+      display: block;
+    }
+    
+    .user-list {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 15px;
+    }
+    
+    .user-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #eef5fb;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: white;
+    }
+    
+    .user-info {
+      flex: 1;
+    }
+    
+    .user-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .user-details {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .add-user-form {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid #eef5fb;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .form-row input, .form-row select {
+      flex: 1;
+    }
+
+    @media(max-width:640px){ 
+      .materiGrid{ grid-template-columns: 1fr; } 
+      .mapel-list, .materi-list {
+        grid-template-columns: 1fr;
+      }
+      .modal-content {
+        width: 95%;
+        margin: 10% auto;
+      }
+      .logo-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .color-options {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .settings-panel {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+      }
+      .logo-page-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      .admin-stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .admin-tools-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- LOGO -->
+    <section id="logoPage" class="card">
+      <div class="logo-page-container">
+        <div class="logo-container" style="margin-bottom: 30px;">
+        </div>
+        <div>
+          <img src="logo apk udinn1.png" type="png" width="350" alt="Logo Edukuis">
+        </div>
+        <div class="logo-page-buttons">
+          <button onclick="showSection('loginSiswaPage')" style="padding: 10px 22px; font-size: 16px;">🎓 Masuk Sebagai Siswa</button>
+          <button class="ghost" onclick="showSection('loginGuruPage')" style="padding: 10px 22px; font-size: 16px;">👨‍🏫 Masuk Sebagai Guru</button>
+          <!-- TOMBOL ADMIN BARU -->
+          <button class="ghost" onclick="showSection('loginAdminPage')" style="padding: 10px 22px; font-size: 16px; background: linear-gradient(90deg, #ff6b6b, #ee5a24); color: white;">👑 Masuk Sebagai Admin</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIN SISWA -->
+    <section id="loginSiswaPage" class="card hidden">
+      <h1>🔑 Login Siswa</h1>
+      <label>Nama</label>
+      <input id="siswaName" placeholder="Nama lengkap (tanpa angka)" oninput="validateName()">
+      <div id="nameWarn" class="error-message">Nama tidak boleh mengandung angka!</div>
+      <label>NIS (7 digit)</label>
+      <input id="siswaNIS" maxlength="7" placeholder="Contoh: 1234567">
+      <label>Tanggal Lahir (TTL)</label>
+      <input id="siswaTTL" type="date">
+      <label>Gender</label>
+      <select id="siswaGender">
+        <option value="">--Pilih Gender--</option>
+        <option value="Laki-laki">Laki-laki</option>
+        <option value="Perempuan">Perempuan</option>
+      </select>
+      <div style="margin-top:14px" class="row">
+        <button onclick="loginSiswa()">Masuk ke Mapel</button>
+        <button class="ghost" onclick="showSection('logoPage')">Kembali</button>
+      </div>
+    </section>
+
+    <!-- LOGIN GURU -->
+    <section id="loginGuruPage" class="card hidden">
+      <h1>👨‍🏫 Login Guru</h1>
+      <div class="row" style="align-items:center; justify-content:space-between">
+        <div class="small">Masuk menggunakan <b>nama guru</b> (bebas) dan password demo <b>guru123</b>.</div>
+        <div><button class="ghost" onclick="showSection('logoPage')">Batal</button></div>
+      </div>
+      <label>Nama Guru</label>
+      <input id="guruName" placeholder="Mis. Budi, S.Pd">
+      <label>Password</label>
+      <input id="guruPass" type="password" placeholder="guru123">
+      <div style="margin-top:12px" class="row">
+        <button onclick="loginGuru()">Masuk Panel Guru</button>
+      </div>
+    </section>
+
+    <!-- LOGIN ADMIN -->
+    <section id="loginAdminPage" class="card hidden">
+      <h1>👑 Login Admin</h1>
+      <div class="row" style="align-items:center; justify-content:space-between">
+        <div class="small">Masuk menggunakan username <b>admin</b> dan password <b>admin123</b>.</div>
+        <div><button class="ghost" onclick="showSection('logoPage')">Batal</button></div>
+      </div>
+      <label>Username</label>
+      <input id="adminUsername" placeholder="admin">
+      <label>Password</label>
+      <input id="adminPassword" type="password" placeholder="admin123">
+      <div style="margin-top:12px" class="row">
+        <button onclick="loginAdmin()" style="background: linear-gradient(90deg, #ff6b6b, #ee5a24);">Masuk Panel Admin</button>
+      </div>
+    </section>
+
+    <!-- MENU MAPEL -->
+    <section id="menuPage" class="card hidden">
+      <h1>📚 Pilih Mata Pelajaran</h1>
+      <div id="mapelGrid">
+        <!-- Mapel akan diisi secara dinamis -->
+      </div>
+      <div style="margin-top:12px" class="row">
+        <button class="ghost" onclick="showSection('loginSiswaPage')">Kembali ke Login</button>
+      </div>
+    </section>
+
+    <!-- MATERI: GRID KARTU -->
+    <section id="materiPage" class="card hidden">
+      <h1 id="materiPageTitle">Mata Pelajaran</h1>
+      <div id="materiGrid" class="materiGrid"></div>
+      <div style="margin-top:16px">
+        <button class="ghost" onclick="showSection('menuPage')">Kembali</button>
+      </div>
+    </section>
+
+    <!-- DETAIL MATERI -->
+    <section id="detailMateriPage" class="card hidden">
+      <h1 id="detailTitle">Judul Materi</h1>
+      <div id="detailContent" class="small" style="margin-top:10px; line-height:1.6;"></div>
+      <div style="margin-top:14px" class="row">
+        <button onclick="showSection('quizSetupPage')">Lanjut ke Pengaturan Kuis</button>
+        <button class="ghost" onclick="showSection('materiPage')">Kembali ke Materi</button>
+      </div>
+    </section>
+
+    <!-- PENGATURAN KUIS SISWA -->
+    <section id="quizSetupPage" class="card hidden">
+      <h1>⚙️ Pengaturan Kuis</h1>
+      <p class="small">Atur tingkat, jumlah soal, dan waktu per soal sebelum mulai.</p>
+      
+      <label>Pilih Tingkat Kesulitan</label>
+      <select id="quizLevel">
+        <!-- Opsi tingkat akan diisi secara dinamis -->
+      </select>
+      
+      <label>Jumlah Soal</label>
+      <select id="quizCount">
+        <!-- Opsi jumlah soal akan diisi secara dinamis -->
+      </select>
+      
+      <label>Waktu per Soal (detik)</label>
+      <select id="quizTime">
+        <!-- Opsi waktu akan diisi secara dinamis -->
+      </select>
+      
+      <div style="margin-top:12px" class="row">
+        <button onclick="startQuiz()">Mulai Kuis</button>
+        <button class="ghost" onclick="showSection('materiPage')">Kembali</button>
+      </div>
+    </section>
+
+    <!-- HALAMAN KUIS -->
+    <section id="quizPage" class="card hidden">
+      <h1 id="quizHeader">📝 Kuis</h1>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="small">Nama: <b id="labelName">-</b> — Mapel: <b id="labelMapel">-</b></div>
+        <div class="small">Sisa waktu: <span class="timer" id="time">60</span> dtk</div>
+      </div>
+      <hr style="margin:10px 0">
+      <div id="questionArea" style="margin-top:12px">
+        <div id="questionText" style="font-weight:700; margin-bottom:12px"></div>
+        <div id="options" class="options"></div>
+      </div>
+      <div style="margin-top:12px" class="row">
+        <button onclick="skipQuestion()">Lewati</button>
+        <button class="ghost" onclick="endQuizEarly()">Selesai</button>
+      </div>
+    </section>
+
+    <!-- HASIL -->
+    <section id="resultPage" class="card hidden">
+      <h1>🎉 Hasil Kuis</h1>
+      <p>Nama: <b id="resName"></b></p>
+      <p>Mapel: <b id="resMapel"></b></p>
+      <p>Materi: <b id="resMateri"></b></p>
+      <p>Tingkat: <b id="resLevel"></b></p>
+      <p>Benar: <b id="resCorrect"></b> / <b id="resTotal"></b></p>
+      <p>Nilai: <b id="resScore"></b></p>
+      <div style="margin-top:12px" class="row">
+        <button onclick="showSection('materiPage')">Kembali ke Materi</button>
+        <button class="ghost" onclick="showSection('menuPage')">Keluar ke Mapel</button>
+      </div>
+    </section>
+
+    <!-- PANEL GURU -->
+    <section id="guruPanel" class="card hidden">
+      <div style="display:flex; align-items:center; justify-content:space-between">
+        <div><h1>📊 Panel Guru</h1><div class="small">Anda login sebagai: <b id="labelGuruName"></b></div></div>
+        <div><button class="ghost" onclick="logoutGuru()">Logout</button></div>
+      </div>
+      <div class="tabs" style="margin-top:12px">
+        <div id="tabNilai" class="tab active" onclick="showGuruTab('nilai')">Lihat Nilai</div>
+        <div id="tabMapel" class="tab" onclick="showGuruTab('mapel')">Kelola Mapel</div>
+        <div id="tabMateri" class="tab" onclick="showGuruTab('materi')">Kelola Materi</div>
+        <div id="tabSoal" class="tab" onclick="showGuruTab('soal')">Kelola Soal</div>
+        <div id="tabPengaturan" class="tab" onclick="showGuruTab('pengaturan')">Pengaturan Kuis</div>
+        <div id="tabExcel" class="tab" onclick="showGuruTab('excel')">Ekspor Excel</div>
+      </div>
+
+      <!-- TAB NILAI -->
+      <div id="panelNilai">
+        <div style="margin-bottom:10px">
+          <input id="searchNilai" placeholder="Cari Nama / NIS..." oninput="renderNilaiTable()" />
+        </div>
+        <div style="overflow:auto; max-height:320px">
+          <table>
+            <thead><tr><th>Nama</th><th>TTL</th><th>NIS</th><th>Mapel</th><th>Materi</th><th>Tingkat</th><th>Jumlah</th><th>TimerPerSoal</th><th>Nilai</th><th>Benar</th><th>Total</th><th>WaktuTersisa</th></tr></thead>
+            <tbody id="nilaiTableBody"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px" class="row">
+          <button class="ghost" onclick="clearAllNilai()">Hapus Semua Nilai</button>
+        </div>
+      </div>
+
+      <!-- TAB MAPEL -->
+      <div id="panelMapel" class="hidden">
+        <div style="margin-bottom:12px">
+          <button onclick="showAddMapelForm()">➕ Tambah Mapel Baru</button>
+        </div>
+        <div id="mapelList" class="mapel-list">
+          <!-- Daftar mapel akan diisi di sini -->
+        </div>
+      </div>
+
+      <!-- TAB MATERI -->
+      <div id="panelMateri" class="hidden">
+        <div class="kelola-materi-container">
+          <div class="kelola-materi-header">
+            <h3>📚 Kelola Materi</h3>
+          </div>
+          
+          <!-- Pilih Mapel -->
+          <div id="pilihMapelSection">
+            <h4>Pilih Mata Pelajaran</h4>
+            <div id="mapelListMateri" class="mapel-list">
+              <!-- Daftar mapel akan diisi di sini -->
+            </div>
+          </div>
+          
+          <!-- Daftar Materi per Mapel -->
+          <div id="daftarMateriSection" class="hidden">
+            <button class="ghost back-button" onclick="backToMapelList()">← Kembali ke Daftar Mapel</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+              <h4 id="judulMapelMateri">Materi untuk Mapel</h4>
+              <button onclick="showAddMateriForm()">➕ Tambah Materi</button>
+            </div>
+            <div id="materiList" class="materi-list">
+              <!-- Daftar materi akan diisi di sini -->
+            </div>
+          </div>
+          
+          <div style="margin-top:15px; text-align:center;">
+            <div class="small" id="materiInfo">Pilih mapel untuk melihat materi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB SOAL -->
+      <div id="panelSoal" class="hidden">
+        <div class="kelola-materi-container">
+          <h3>📝 Kelola Soal</h3>
+          
+          <!-- Pilih Mapel -->
+          <div style="margin-bottom:15px;">
+            <label>Pilih Mata Pelajaran</label>
+            <select id="soalMapelSelect" onchange="loadMateriForSoal()">
+              <option value="">Pilih Mata Pelajaran</option>
+            </select>
+          </div>
+          
+          <!-- Pilih Materi -->
+          <div style="margin-bottom:15px;">
+            <label>Pilih Materi</label>
+            <select id="soalMateriSelect" onchange="loadTingkatForSoal()">
+              <option value="">Pilih Materi</option>
+            </select>
+          </div>
+          
+          <!-- Pilih Tingkat -->
+          <div style="margin-bottom:15px;">
+            <label>Pilih Tingkat Kesulitan</label>
+            <select id="soalTingkatSelect" onchange="loadSoalList()">
+              <option value="">Pilih Tingkat</option>
+            </select>
+          </div>
+          
+          <!-- Tombol Tambah Soal -->
+          <div style="margin-bottom:15px;">
+            <button onclick="showAddSoalForm()">➕ Tambah Soal Baru</button>
+          </div>
+          
+          <!-- Daftar Soal -->
+          <div id="soalListContainer">
+            <h4>Daftar Soal</h4>
+            <div id="soalList">
+              <!-- Daftar soal akan diisi di sini -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB PENGATURAN -->
+      <div id="panelPengaturan" class="hidden">
+        <div class="kelola-materi-container">
+          <h3>⚙️ Pengaturan Kuis Global</h3>
+          <p class="small">Pengaturan ini akan menjadi default untuk semua kuis.</p>
+          
+          <div class="setting-item">
+            <h4>Kelola Opsi Jumlah Soal</h4>
+            <div id="jumlahSoalList">
+              <!-- Daftar opsi jumlah soal akan diisi di sini -->
+            </div>
+            <div class="setting-controls">
+              <input type="number" id="newJumlahSoal" placeholder="Jumlah soal" min="1" max="50">
+              <button onclick="addJumlahSoal()">Tambah Opsi</button>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <h4>Kelola Opsi Waktu per Soal</h4>
+            <div id="waktuSoalList">
+              <!-- Daftar opsi waktu soal akan diisi di sini -->
+            </div>
+            <div class="setting-controls">
+              <input type="number" id="newWaktuSoal" placeholder="Waktu (detik)" min="5" max="300">
+              <button onclick="addWaktuSoal()">Tambah Opsi</button>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <h4>Kelola Tingkat Kesulitan</h4>
+            <div id="tingkatList">
+              <!-- Daftar tingkat kesulitan akan diisi di sini -->
+            </div>
+            <div class="setting-controls">
+              <input type="text" id="newTingkatName" placeholder="Nama Tingkat">
+              <input type="text" id="newTingkatId" placeholder="ID (huruf kecil)">
+              <button onclick="addTingkat()">Tambah Tingkat</button>
+            </div>
+          </div>
+          
+          <div style="margin-top:12px" class="row">
+            <button onclick="saveAllPengaturan()">Simpan Semua Pengaturan</button>
+            <button class="ghost" onclick="resetAllPengaturan()">Reset ke Default</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB EKSPOR EXCEL -->
+      <div id="panelExcel" class="hidden">
+        <div class="kelola-materi-container">
+          <h3>📊 Ekspor Data ke Excel</h3>
+          <p class="small">Ekspor data nilai, materi, dan soal ke format Excel untuk analisis lebih lanjut.</p>
+          
+          <div class="excel-export-section">
+            <h4>📈 Ekspor Data Nilai</h4>
+            <p class="small">Ekspor semua data nilai siswa ke file Excel dengan format yang rapi.</p>
+            <div class="row">
+              <button onclick="exportNilaiToExcel()">📥 Ekspor Nilai ke Excel</button>
+              <button class="ghost" onclick="previewNilaiExcel()">👁️ Preview Data</button>
+            </div>
+            <div id="nilaiPreview" class="excel-preview hidden">
+              <table class="excel-table" id="nilaiExcelPreview">
+                <!-- Preview tabel nilai akan diisi di sini -->
+              </table>
+            </div>
+          </div>
+          
+          <div class="excel-export-section">
+            <h4>📚 Ekspor Data Materi</h4>
+            <p class="small">Ekspor semua data materi pembelajaran ke file Excel.</p>
+            <div class="row">
+              <button onclick="exportMateriToExcel()">📥 Ekspor Materi ke Excel</button>
+              <button class="ghost" onclick="previewMateriExcel()">👁️ Preview Data</button>
+            </div>
+            <div id="materiPreview" class="excel-preview hidden">
+              <table class="excel-table" id="materiExcelPreview">
+                <!-- Preview tabel materi akan diisi di sini -->
+              </table>
+            </div>
+          </div>
+          
+          <div class="excel-export-section">
+            <h4>📝 Ekspor Data Soal</h4>
+            <p class="small">Ekspor semua bank soal ke file Excel untuk backup atau analisis.</p>
+            <div class="row">
+              <button onclick="exportSoalToExcel()">📥 Ekspor Soal ke Excel</button>
+              <button class="ghost" onclick="previewSoalExcel()">👁️ Preview Data</button>
+            </div>
+            <div id="soalPreview" class="excel-preview hidden">
+              <table class="excel-table" id="soalExcelPreview">
+                <!-- Preview tabel soal akan diisi di sini -->
+              </table>
+            </div>
+          </div>
+          
+          <div class="excel-export-section">
+            <h4>🔄 Ekspor Semua Data</h4>
+            <p class="small">Ekspor semua data (nilai, materi, soal) ke dalam satu file Excel dengan multiple sheets.</p>
+            <button onclick="exportAllToExcel()">📥 Ekspor Semua Data ke Excel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL ADMIN -->
+    <section id="adminPanel" class="card hidden">
+      <div style="display:flex; align-items:center; justify-content:space-between">
+        <div><h1>👑 Panel Admin</h1><div class="small">Anda login sebagai: <b id="labelAdminName"></b></div></div>
+        <div>
+          <!-- PERBAIKAN TOMBOL LOGOUT -->
+          <button class="logout-btn" onclick="logoutAdmin()" style="padding: 8px 16px; font-size: 14px;">Logout</button>
+        </div>
+      </div>
+      
+      <div class="tabs" style="margin-top:12px">
+        <div id="tabAdminDashboard" class="tab active" onclick="showAdminTab('dashboard')">Dashboard</div>
+        <div id="tabAdminUsers" class="tab" onclick="showAdminTab('users')">Kelola Pengguna</div>
+        <div id="tabAdminLogins" class="tab" onclick="showAdminTab('logins')">Kelola Login</div> <!-- TAB BARU -->
+        <div id="tabAdminBackup" class="tab" onclick="showAdminTab('backup')">Backup & Restore</div>
+        <div id="tabAdminSystem" class="tab" onclick="showAdminTab('system')">Pengaturan Sistem</div>
+      </div>
+
+      <!-- TAB DASHBOARD ADMIN -->
+      <div id="panelAdminDashboard">
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <h3>📊 Total Nilai</h3>
+            <div class="admin-stat-value" id="adminTotalNilai">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <h3>📚 Total Mapel</h3>
+            <div class="admin-stat-value" id="adminTotalMapel">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <h3>📝 Total Materi</h3>
+            <div class="admin-stat-value" id="adminTotalMateri">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <h3>❓ Total Soal</h3>
+            <div class="admin-stat-value" id="adminTotalSoal">0</div>
+          </div>
+        </div>
+        
+        <div class="kelola-materi-container">
+          <h3>🛠️ Tools Administrasi</h3>
+          <div class="admin-tools-grid">
+            <div class="admin-tool-card">
+              <h4>🗑️ Hapus Data</h4>
+              <p class="small">Hapus semua data sistem</p>
+              <button onclick="adminClearAllData()" class="admin-danger-btn" style="width: 100%; margin-top: 10px;">Hapus Semua Data</button>
+            </div>
+            <div class="admin-tool-card">
+              <h4>🔄 Reset Sistem</h4>
+              <p class="small">Reset ke pengaturan default</p>
+              <button onclick="adminResetToDefault()" class="admin-warning-btn" style="width: 100%; margin-top: 10px;">Reset ke Default</button>
+            </div>
+            <div class="admin-tool-card">
+              <h4>📥 Export Data</h4>
+              <p class="small">Backup semua data sistem</p>
+              <button onclick="adminExportAllData()" style="width: 100%; margin-top: 10px;">Export Semua Data</button>
+            </div>
+            <div class="admin-tool-card">
+              <h4>📤 Import Data</h4>
+              <p class="small">Restore data dari backup</p>
+              <button onclick="adminImportData()" class="ghost" style="width: 100%; margin-top: 10px;">Import Data</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="kelola-materi-container" style="margin-top: 15px;">
+          <h3>📈 Statistik Sistem</h3>
+          <div id="adminStatsContent">
+            <p>Memuat statistik...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB KELOLA PENGGUNA -->
+      <div id="panelAdminUsers" class="hidden">
+        <div class="kelola-materi-container">
+          <h3>👥 Kelola Pengguna</h3>
+          <p class="small">Kelola semua pengguna sistem (siswa, guru, admin)</p>
+          
+          <div style="margin-bottom: 15px;">
+            <input type="text" id="adminSearchUsers" placeholder="Cari pengguna..." style="width: 100%;" oninput="adminSearchUsers()">
+          </div>
+          
+          <div style="overflow: auto; max-height: 400px;">
+            <table style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Role</th>
+                  <th>NIS/Username</th>
+                  <th>TTL</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersTable">
+                <!-- Data pengguna akan diisi di sini -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB KELOLA LOGIN (BARU) -->
+      <div id="panelAdminLogins" class="hidden">
+        <div class="login-management-container">
+          <h3>🔐 Kelola Login & Password</h3>
+          <p class="small">Kelura semua akun login (siswa, guru, admin) dan password mereka.</p>
+          
+          <div class="login-tabs">
+            <div class="login-tab active" onclick="showLoginTab('siswa')">Siswa</div>
+            <div class="login-tab" onclick="showLoginTab('guru')">Guru</div>
+            <div class="login-tab" onclick="showLoginTab('admin')">Admin</div>
+          </div>
+          
+          <!-- TAB SISWA -->
+          <div id="loginTabSiswa" class="login-content active">
+            <div class="add-user-form">
+              <h4>➕ Tambah Siswa Baru</h4>
+              <div class="form-row">
+                <input type="text" id="newSiswaName" placeholder="Nama Siswa">
+                <input type="text" id="newSiswaNIS" placeholder="NIS (7 digit)" maxlength="7">
+              </div>
+              <div class="form-row">
+                <input type="date" id="newSiswaTTL">
+                <select id="newSiswaGender">
+                  <option value="">Pilih Gender</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <input type="password" id="newSiswaPassword" placeholder="Password (opsional)">
+                <button onclick="addNewSiswa()">Tambah Siswa</button>
+              </div>
+            </div>
+            
+            <div class="user-list" id="siswaList">
+              <!-- Daftar siswa akan diisi di sini -->
+            </div>
+          </div>
+          
+          <!-- TAB GURU -->
+          <div id="loginTabGuru" class="login-content">
+            <div class="add-user-form">
+              <h4>➕ Tambah Guru Baru</h4>
+              <div class="form-row">
+                <input type="text" id="newGuruName" placeholder="Nama Guru">
+                <input type="text" id="newGuruUsername" placeholder="Username">
+              </div>
+              <div class="form-row">
+                <input type="password" id="newGuruPassword" placeholder="Password">
+                <button onclick="addNewGuru()">Tambah Guru</button>
+              </div>
+            </div>
+            
+            <div class="user-list" id="guruList">
+              <!-- Daftar guru akan diisi di sini -->
+            </div>
+          </div>
+          
+          <!-- TAB ADMIN -->
+          <div id="loginTabAdmin" class="login-content">
+            <div class="add-user-form">
+              <h4>➕ Tambah Admin Baru</h4>
+              <div class="form-row">
+                <input type="text" id="newAdminName" placeholder="Nama Admin">
+                <input type="text" id="newAdminUsername" placeholder="Username">
+              </div>
+              <div class="form-row">
+                <input type="password" id="newAdminPassword" placeholder="Password">
+                <button onclick="addNewAdmin()">Tambah Admin</button>
+              </div>
+            </div>
+            
+            <div class="user-list" id="adminList">
+              <!-- Daftar admin akan diisi di sini -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB BACKUP & RESTORE -->
+      <div id="panelAdminBackup" class="hidden">
+        <div class="kelola-materi-container">
+          <h3>💾 Backup & Restore Data</h3>
+          
+          <div style="margin-bottom: 20px;">
+            <h4>📥 Backup Data</h4>
+            <p class="small">Backup semua data sistem ke file JSON</p>
+            <button onclick="adminBackupData()">💾 Backup Semua Data</button>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <h4>📤 Restore Data</h4>
+            <p class="small">Restore data dari file backup JSON</p>
+            <input type="file" id="adminRestoreFile" accept=".json" style="margin-bottom: 10px;">
+            <button onclick="adminRestoreData()" class="ghost">🔄 Restore Data</button>
+          </div>
+          
+          <div>
+            <h4>🔄 Reset Data</h4>
+            <p class="small">Hati-hati! Tindakan ini tidak dapat dibatalkan</p>
+            <div class="row">
+              <button onclick="adminResetNilai()" style="background: #ffa726;">🗑️ Reset Data Nilai</button>
+              <button onclick="adminResetSoal()" style="background: #ef5350;">🗑️ Reset Data Soal</button>
+              <button onclick="adminResetAll()" style="background: #d32f2f;">💥 Reset Semua Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB PENGATURAN SISTEM -->
+      <div id="panelAdminSystem" class="hidden">
+        <div class="kelola-materi-container">
+          <h3>⚙️ Pengaturan Sistem</h3>
+          
+          <div class="setting-item">
+            <h4>🔧 Konfigurasi Umum</h4>
+            <label>Nama Aplikasi</label>
+            <input type="text" id="adminAppName" value="Edukuis SMP/MTS" style="margin-bottom: 10px;">
+            
+            <label>Versi Aplikasi</label>
+            <input type="text" id="adminAppVersion" value="1.0.0" style="margin-bottom: 10px;">
+            
+            <button onclick="adminSaveSystemSettings()">💾 Simpan Pengaturan</button>
+          </div>
+          
+          <div class="setting-item">
+            <h4>🔐 Keamanan</h4>
+            <div class="row">
+              <button onclick="adminChangePassword()" class="ghost">🔑 Ganti Password Admin</button>
+              <button onclick="adminClearCache()" class="ghost">🗑️ Bersihkan Cache</button>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <h4>ℹ️ Informasi Sistem</h4>
+            <div id="adminSystemInfo">
+              <p>Memuat informasi sistem...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL TAMBAH/EDIT MATERI -->
+    <div id="materiModal" class="modal">
+      <div class="modal-content" width="25">
+        <div class="modal-header">
+          <h3 id="materiModalTitle">Tambah Materi Baru</h3>
+          <span class="close" onclick="closeMateriModal()">&times;</span>
+        </div>
+        
+        <form id="materiForm">
+          <div class="form-group">
+            <label for="modalMapelId">Mata Pelajaran *</label>
+            <select class="form-control" id="modalMapelId" name="mapel_id" required>
+              <option value="">Pilih Mata Pelajaran</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="modalJudulMateri">Judul Materi *</label>
+            <input type="text" class="form-control" id="modalJudulMateri" name="judul_materi" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="modalDeskripsi">Deskripsi/Ringkasan *</label>
+            <textarea class="form-control" id="modalDeskripsi" name="deskripsi" rows="3" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="modalKontenMateri">Konten Materi (Pengertian) *</label>
+            <textarea class="form-control" id="modalKontenMateri" name="konten_materi" rows="6" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="modalStatus">Status *</label>
+            <select class="form-control" id="modalStatus" name="status" required>
+              <option value="active">Aktif</option>
+              <option value="inactive">Nonaktif</option>
+            </select>
+          </div>
+          
+          <div class="action-buttons">
+            <button type="button" class="ghost" onclick="closeMateriModal()">Batal</button>
+            <button type="submit" class="primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL TAMBAH/EDIT MAPEL -->
+    <div id="mapelModal" class="modal">
+      <div class="modal-content" width="25">
+        <div class="modal-header">
+          <h3 id="mapelModalTitle">Tambah Mapel Baru</h3>
+          <span class="close" onclick="closeMapelModal()">&times;</span>
+        </div>
+        
+        <form id="mapelForm">
+          <div class="form-group">
+            <label for="modalNamaMapel">Nama Mapel *</label>
+            <input type="text" class="form-control" id="modalNamaMapel" name="nama_mapel" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="modalWarnaMapel">Warna Mapel *</label>
+            <input type="color" class="form-control" id="modalWarnaMapel" name="warna_mapel" value="#0b63b8" required>
+          </div>
+          
+          <div class="action-buttons">
+            <button type="button" class="ghost" onclick="closeMapelModal()">Batal</button>
+            <button type="submit" class="primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL TAMBAH/EDIT SOAL -->
+    <div id="soalModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="soalModalTitle">Tambah Soal Baru</h3>
+          <span class="close" onclick="closeSoalModal()">&times;</span>
+        </div>
+        
+        <form id="soalForm">
+          <div class="form-group">
+            <label for="modalPertanyaan">Pertanyaan *</label>
+            <textarea class="form-control" id="modalPertanyaan" name="pertanyaan" rows="3" required></textarea>
+          </div>
+          
+          <div class="opsi-container">
+            <div class="opsi-header">
+              <h4>Pilihan Jawaban</h4>
+              <div class="opsi-controls">
+                <button type="button" class="ghost" onclick="addOpsi()">+ Tambah Opsi</button>
+                <button type="button" class="ghost" onclick="removeOpsi()">- Hapus Opsi</button>
+              </div>
+            </div>
+            
+            <div id="opsiList" class="opsi-list">
+              <!-- Opsi jawaban akan diisi secara dinamis -->
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="modalJawabanBenar">Jawaban Benar *</label>
+            <select class="form-control" id="modalJawabanBenar" required>
+              <option value="">Pilih Jawaban Benar</option>
+            </select>
+          </div>
+          
+          <div class="action-buttons">
+            <button type="button" class="ghost" onclick="closeSoalModal()">Batal</button>
+            <button type="submit" class="primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="small">Semua data (mapel, materi, soal, nilai) disimpan di browser (localStorage). Hati-hati jika membersihkan data browser.</footer>
+  </div>
+
+  <!-- PANEL PENGATURAN WARNA BACKGROUND -->
+  <div class="settings-toggle" onclick="toggleSettings()">⚙️</div>
+  
+  <div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+      <h3 class="settings-title">Pengaturan Tampilan</h3>
+      <button class="close-settings" onclick="toggleSettings()">×</button>
+    </div>
+    
+    <div class="color-picker-container">
+      <h4>🎨 Pilih Warna Background</h4>
+      <p class="small">Pilih warna background yang Anda sukai untuk pengalaman belajar yang lebih menyenangkan!</p>
+      
+      <div class="color-options">
+        <div class="color-option active" style="background: linear-gradient(160deg, #f4fbff, #ffffff);" onclick="changeBackgroundColor('#f4fbff', '#ffffff')">
+          Default
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #e6f7ff, #ffffff);" onclick="changeBackgroundColor('#e6f7ff', '#ffffff')">
+          Biru Muda
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #f0fff0, #ffffff);" onclick="changeBackgroundColor('#f0fff0', '#ffffff')">
+          Hijau Muda
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #fff0f5, #ffffff);" onclick="changeBackgroundColor('#fff0f5', '#ffffff')">
+          Pink Muda
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #fff8e1, #ffffff);" onclick="changeBackgroundColor('#fff8e1', '#ffffff')">
+          Kuning Muda
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #f3e5f5, #ffffff);" onclick="changeBackgroundColor('#f3e5f5', '#ffffff')">
+          Ungu Muda
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #e8f5e9, #ffffff);" onclick="changeBackgroundColor('#e8f5e9', '#ffffff')">
+          Mint
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #fff3e0, #ffffff);" onclick="changeBackgroundColor('#fff3e0', '#ffffff')">
+          Oranye Muda
+        </div>
+        <div class="color-option" style="background: linear-gradient(160deg, #e0f2f1, #ffffff);" onclick="changeBackgroundColor('#e0f2f1', '#ffffff')">
+          Cyan Muda
+        </div>
+      </div>
+      
+      <div style="margin-top: 15px;">
+        <label for="customColor">Atau pilih warna kustom:</label>
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+          <input type="color" id="customColor" value="#f4fbff" style="width: 50px; height: 40px;">
+          <button onclick="applyCustomColor()" class="ghost">Terapkan Warna Kustom</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    /* ---------- DEFAULT DATA ---------- */
+    const defaultMapel = [
+      { id: 'pai', name: 'PAI (Agama)', color: '#0b63b8' },
+      { id: 'matematika', name: 'Matematika', color: '#7b3cff' },
+      { id: 'bahasa_indonesia', name: 'Bahasa Indonesia', color: '#ff6b6b' },
+      { id: 'bahasa_inggris', name: 'Bahasa Inggris', color: '#4ecdc4' },
+      { id: 'ipa', name: 'IPA', color: '#45b7d1' },
+      { id: 'ips', name: 'IPS', color: '#f9ca24' }
+    ];
+
+    const defaultMateri = {
+      pai: [
+        { 
+          id: 'rukunIman', 
+          title: 'Rukun Iman', 
+          summary: 'Iman kepada Allah, malaikat, kitab, rasul, hari akhir, qada & qadar.', 
+          content: `<h3>Rukun Iman</h3>
+                    <p>Rukun iman adalah dasar kepercayaan dalam agama Islam yang harus diyakini oleh setiap muslim. Rukun iman terdiri dari 6 perkara:</p>
+                    <ol>
+                      <li><strong>Iman kepada Allah</strong> - Percaya dengan sepenuh hati bahwa Allah SWT adalah Tuhan Yang Maha Esa</li>
+                      <li><strong>Iman kepada Malaikat</strong> - Percaya kepada malaikat-malaikat Allah yang diciptakan dari cahaya</li>
+                      <li><strong>Iman kepada Kitab-kitab</strong> - Percaya kepada kitab-kitab suci yang diturunkan Allah</li>
+                      <li><strong>Iman kepada Rasul</strong> - Percaya kepada nabi dan rasul yang diutus Allah</li>
+                      <li><strong>Iman kepada Hari Akhir</strong> - Percaya akan adanya kehidupan setelah kematian</li>
+                      <li><strong>Iman kepada Qada dan Qadar</strong> - Percaya kepada takdir baik dan buruk dari Allah</li>
+                    </ol>`,
+          status: 'active'
+        },
+        { 
+          id: 'rukunIslam', 
+          title: 'Rukun Islam', 
+          summary: 'Syahadat, Shalat, Zakat, Puasa, Haji.', 
+          content: `<h3>Rukun Islam</h3>
+                    <p>Rukun Islam adalah lima kewajiban utama yang menjadi pondasi kehidupan seorang muslim. Kelima rukun tersebut adalah:</p>
+                    <ol>
+                      <li><strong>Syahadat</strong> - Mengucapkan dua kalimat syahadat sebagai pengakuan keimanan</li>
+                      <li><strong>Shalat</strong> - Menunaikan shalat lima waktu sehari semalam</li>
+                      <li><strong>Zakat</strong> - Memberikan zakat kepada yang berhak menerimanya</li>
+                      <li><strong>Puasa</strong> - Berpuasa di bulan Ramadhan</li>
+                      <li><strong>Haji</strong> - Menunaikan ibadah haji ke Baitullah bagi yang mampu</li>
+                    </ol>`,
+          status: 'active'
+        }
+      ],
+      matematika: [
+        { 
+          id: 'bilangan', 
+          title: 'Bilangan', 
+          summary: 'Jenis-jenis bilangan: bulat, pecahan, desimal.', 
+          content: `<h3>Bilangan</h3>
+                    <p>Bilangan adalah konsep matematika yang digunakan untuk pencacahan dan pengukuran. Berikut jenis-jenis bilangan:</p>
+                    <ul>
+                      <li><strong>Bilangan Bulat</strong> - Bilangan yang terdiri dari bilangan negatif, nol, dan positif</li>
+                      <li><strong>Bilangan Pecahan</strong> - Bilangan yang dapat dinyatakan sebagai a/b dimana b ≠ 0</li>
+                      <li><strong>Bilangan Desimal</strong> - Bilangan yang menggunakan sistem basis 10</li>
+                    </ul>`,
+          status: 'active'
+        }
+      ],
+      bahasa_indonesia: [
+        { 
+          id: 'tataBahasa', 
+          title: 'Tata Bahasa', 
+          summary: 'Struktur kalimat, jenis kata, dan aturan penulisan.', 
+          content: `<h3>Tata Bahasa Indonesia</h3>
+                    <p>Tata bahasa Indonesia mengatur struktur dan aturan dalam berbahasa. Berikut komponen pentingnya:</p>
+                    <h4>Jenis Kata</h4>
+                    <ul>
+                      <li><strong>Kata Benda (Nomina)</strong> - Menyatakan orang, tempat, benda, atau konsep</li>
+                      <li><strong>Kata Kerja (Verba)</strong> - Menyatakan tindakan atau keadaan</li>
+                      <li><strong>Kata Sifat (Adjektiva)</strong> - Memberikan sifat atau karakteristik</li>
+                    </ul>`,
+          status: 'active'
+        }
+      ]
+    };
+
+    const defaultSoal = {
+      pai: {
+        rukunIman: {
+          low: [
+            { 
+              q: "Rukun Iman ada berapa?", 
+              options: ["5", "6", "7", "8"], 
+              answer: 1 
+            },
+            { 
+              q: "Siapa yang wajib diimani dalam Rukun Iman?", 
+              options: ["Allah saja", "Allah dan Malaikat", "Allah, Malaikat, Kitab", "Allah, Malaikat, Kitab, Rasul"], 
+              answer: 3 
+            }
+          ]
+        },
+        rukunIslam: {
+          low: [
+            { 
+              q: "Rukun Islam yang pertama adalah?", 
+              options: ["Shalat", "Syahadat", "Puasa", "Zakat"], 
+              answer: 1 
+            }
+          ]
+        }
+      },
+      matematika: {
+        bilangan: {
+          low: [
+            { 
+              q: "Bilangan bulat positif dimulai dari?", 
+              options: ["-1", "0", "1", "2"], 
+              answer: 2 
+            }
+          ]
+        }
+      }
+    };
+
+    const defaultPengaturan = {
+      jumlahSoal: [5, 10, 15, 20],
+      waktuSoal: [30, 60, 90, 120],
+      tingkatKesulitan: [
+        { id: 'low', name: 'Mudah (LOW)' },
+        { id: 'moderate', name: 'Sedang (MODERATE)' },
+        { id: 'hots', name: 'Sulit (HOTS)' }
+      ]
+    };
+
+    /* ---------- KONSTANTA BARU UNTUK LOGIN ---------- */
+    const KEY_LOGIN_SISWA = 'eduquis_login_siswa';
+    const KEY_LOGIN_GURU = 'eduquis_login_guru';
+    const KEY_LOGIN_ADMIN = 'eduquis_login_admin';
+
+    /* ---------- DEFAULT DATA LOGIN ---------- */
+    const defaultLoginSiswa = [];
+    const defaultLoginGuru = [
+      { username: 'guru', password: 'guru123', name: 'Guru Demo' }
+    ];
+    const defaultLoginAdmin = [
+      { username: 'admin', password: 'admin123', name: 'Administrator' }
+    ];
+
+    /* ---------- storage keys ---------- */
+    const KEY_MAPEL = 'eduquis_mapel';
+    const KEY_MATERI = 'eduquis_materi';
+    const KEY_SOAL = 'eduquis_soal';
+    const KEY_NILAI = 'eduquis_nilai';
+    const KEY_PENGATURAN = 'eduquis_pengaturan';
+    const KEY_BACKGROUND = 'eduquis_background';
+
+    /* ---------- initialize storage if empty ---------- */
+    function initStorage(){
+      if(!localStorage.getItem(KEY_MAPEL)) localStorage.setItem(KEY_MAPEL, JSON.stringify(defaultMapel));
+      if(!localStorage.getItem(KEY_MATERI)) localStorage.setItem(KEY_MATERI, JSON.stringify(defaultMateri));
+      if(!localStorage.getItem(KEY_SOAL)) localStorage.setItem(KEY_SOAL, JSON.stringify(defaultSoal));
+      if(!localStorage.getItem(KEY_NILAI)) localStorage.setItem(KEY_NILAI, JSON.stringify([]));
+      if(!localStorage.getItem(KEY_PENGATURAN)) localStorage.setItem(KEY_PENGATURAN, JSON.stringify(defaultPengaturan));
+      if(!localStorage.getItem(KEY_BACKGROUND)) localStorage.setItem(KEY_BACKGROUND, JSON.stringify({color1: '#f4fbff', color2: '#ffffff'}));
+      
+      // Inisialisasi storage login
+      if(!localStorage.getItem(KEY_LOGIN_SISWA)) localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(defaultLoginSiswa));
+      if(!localStorage.getItem(KEY_LOGIN_GURU)) localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(defaultLoginGuru));
+      if(!localStorage.getItem(KEY_LOGIN_ADMIN)) localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(defaultLoginAdmin));
+    }
+    initStorage();
+
+    /* ---------- state ---------- */
+    let student = null;
+    let currentMapel = null;
+    let currentMaterial = null;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let correctCount = 0;
+    let score = 0;
+    let timer = null;
+    let timeLeft = 60;
+    let selectedTimePerQ = 60;
+    let selectedJumlahSoal = 10;
+    let selectedTingkat = 'moderate';
+    let currentGuru = null;
+    let editingMateriId = null;
+    let editingMapelId = null;
+    let editingSoalId = null;
+    let selectedMapelForMateri = null;
+    let selectedMapelForSoal = null;
+    let selectedMateriForSoal = null;
+    let selectedTingkatForSoal = null;
+    let opsiCount = 4;
+    let currentAdmin = null;
+
+    /* ---------- PENGATURAN WARNA BACKGROUND ---------- */
+    function toggleSettings() {
+      const settingsPanel = document.getElementById('settingsPanel');
+      settingsPanel.classList.toggle('active');
+    }
+    
+    function changeBackgroundColor(color1, color2) {
+      // Update active state
+      document.querySelectorAll('.color-option').forEach(option => {
+        option.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Apply background
+      document.body.style.background = `linear-gradient(160deg, ${color1}, ${color2})`;
+      
+      // Save to localStorage
+      localStorage.setItem(KEY_BACKGROUND, JSON.stringify({color1, color2}));
+    }
+    
+    function applyCustomColor() {
+      const customColor = document.getElementById('customColor').value;
+      changeBackgroundColor(customColor, '#ffffff');
+      
+      // Update active state
+      document.querySelectorAll('.color-option').forEach(option => {
+        option.classList.remove('active');
+      });
+    }
+    
+    function loadBackgroundColor() {
+      const bgData = JSON.parse(localStorage.getItem(KEY_BACKGROUND)) || {color1: '#f4fbff', color2: '#ffffff'};
+      document.body.style.background = `linear-gradient(160deg, ${bgData.color1}, ${bgData.color2})`;
+    }
+
+    /* ---------- helper: show section ---------- */
+    function showSection(id){
+      document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
+      const el = document.getElementById(id);
+      if(el) el.classList.remove('hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+      
+      if (id === 'menuPage') {
+        renderMapelGrid();
+      }
+      
+      if (id === 'guruPanel' || id === 'quizSetupPage') {
+        renderPengaturanOptions();
+      }
+      
+      // Load background color preference
+      loadBackgroundColor();
+    }
+
+    /* ---------- LOGIN SISWA ---------- */
+    function validateName() {
+      const nameInput = document.getElementById('siswaName');
+      const nameWarn = document.getElementById('nameWarn');
+      const name = nameInput.value.trim();
+      
+      // Cek apakah nama mengandung angka
+      const hasNumber = /\d/.test(name);
+      
+      if (hasNumber) {
+        nameWarn.style.display = 'block';
+        nameInput.classList.add('input-error');
+        return false;
+      } else {
+        nameWarn.style.display = 'none';
+        nameInput.classList.remove('input-error');
+        return true;
+      }
+    }
+
+    function loginSiswa(){
+      // Validasi nama
+      if (!validateName()) {
+        alert('Nama tidak boleh mengandung angka!');
+        return;
+      }
+      
+      const name = document.getElementById('siswaName').value.trim();
+      const nis = document.getElementById('siswaNIS').value.trim();
+      const ttl = document.getElementById('siswaTTL').value;
+      const gender = document.getElementById('siswaGender').value;
+      
+      if(!name){ 
+        alert('Masukkan nama siswa.'); 
+        return; 
+      }
+      
+      if(nis.length !== 7 || isNaN(nis)){ 
+        alert('NIS harus 7 digit angka.'); 
+        return; 
+      }
+      
+      if(!ttl){ 
+        alert('Pilih tanggal lahir.'); 
+        return; 
+      }
+      
+      if(!gender){ 
+        alert('Pilih gender.'); 
+        return; 
+      }
+      
+      // Cek apakah siswa sudah terdaftar
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      const siswa = loginSiswaData.find(s => s.nis === nis);
+      
+      if (siswa) {
+        // Jika sudah terdaftar, gunakan data yang ada
+        student = {
+          name: siswa.name,
+          nis: siswa.nis,
+          ttl: siswa.ttl,
+          gender: siswa.gender
+        };
+      } else {
+        // Jika belum terdaftar, simpan sebagai siswa baru
+        student = {
+          name: name,
+          nis: nis,
+          ttl: ttl,
+          gender: gender
+        };
+        
+        // Tambahkan ke data login siswa
+        loginSiswaData.push({
+          name: name,
+          nis: nis,
+          ttl: ttl,
+          gender: gender,
+          password: '' // Password kosong untuk siswa
+        });
+        localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(loginSiswaData));
+      }
+      
+      // Tampilkan halaman mapel
+      showSection('menuPage');
+    }
+
+    /* ---------- LOGIN GURU ---------- */
+    function loginGuru(){
+      const name = document.getElementById('guruName').value.trim();
+      const pass = document.getElementById('guruPass').value.trim();
+      
+      if(!name){ 
+        alert('Masukkan nama guru.'); 
+        return; 
+      }
+      
+      // Cek login guru
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      const guru = loginGuruData.find(g => g.username === name.toLowerCase() || g.name.toLowerCase() === name.toLowerCase());
+      
+      if (!guru) {
+        alert('Guru tidak terdaftar!');
+        return;
+      }
+      
+      if(guru.password !== pass){ 
+        alert('Password salah.'); 
+        return; 
+      }
+      
+      currentGuru = guru.name;
+      document.getElementById('labelGuruName').innerText = currentGuru;
+      
+      showSection('guruPanel');
+      showGuruTab('nilai');
+    }
+
+    /* ---------- LOGIN ADMIN ---------- */
+    function loginAdmin() {
+      const username = document.getElementById('adminUsername').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      
+      // Cek login admin
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      const admin = loginAdminData.find(a => a.username === username);
+      
+      if (!admin) {
+        alert('Username atau password admin salah!');
+        return;
+      }
+      
+      if(admin.password !== password){ 
+        alert('Username atau password admin salah!'); 
+        return; 
+      }
+      
+      currentAdmin = admin;
+      document.getElementById('labelAdminName').textContent = admin.name;
+      showSection('adminPanel');
+      showAdminTab('dashboard');
+      loadAdminDashboard();
+    }
+
+    /* ---------- FUNGSI KELOLA LOGIN ADMIN ---------- */
+    function showLoginTab(tab) {
+      // Reset semua tab
+      document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.login-content').forEach(c => c.classList.remove('active'));
+      
+      // Aktifkan tab yang dipilih
+      document.querySelector(`.login-tab:nth-child(${tab === 'siswa' ? 1 : tab === 'guru' ? 2 : 3})`).classList.add('active');
+      document.getElementById(`loginTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+      
+      // Muat data sesuai tab
+      if (tab === 'siswa') loadSiswaList();
+      else if (tab === 'guru') loadGuruList();
+      else if (tab === 'admin') loadAdminList();
+    }
+
+    function loadSiswaList() {
+      const container = document.getElementById('siswaList');
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      
+      container.innerHTML = '';
+      
+      if (loginSiswaData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada data siswa</div>';
+        return;
+      }
+      
+      loginSiswaData.forEach((siswa, index) => {
+        const userItem = document.createElement('div');
+        userItem.className = 'user-item';
+        userItem.innerHTML = `
+          <div class="user-info">
+            <div class="user-name">${escapeHtml(siswa.name)}</div>
+            <div class="user-details">
+              NIS: ${escapeHtml(siswa.nis)} | TTL: ${escapeHtml(siswa.ttl)} | Gender: ${escapeHtml(siswa.gender)}
+              ${siswa.password ? ' | Password: ' + siswa.password : ''}
+            </div>
+          </div>
+          <div class="user-actions">
+            <button onclick="editSiswa(${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteSiswa(${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        container.appendChild(userItem);
+      });
+    }
+
+    function loadGuruList() {
+      const container = document.getElementById('guruList');
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      
+      container.innerHTML = '';
+      
+      if (loginGuruData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada data guru</div>';
+        return;
+      }
+      
+      loginGuruData.forEach((guru, index) => {
+        const userItem = document.createElement('div');
+        userItem.className = 'user-item';
+        userItem.innerHTML = `
+          <div class="user-info">
+            <div class="user-name">${escapeHtml(guru.name)}</div>
+            <div class="user-details">
+              Username: ${escapeHtml(guru.username)} | Password: ${escapeHtml(guru.password)}
+            </div>
+          </div>
+          <div class="user-actions">
+            <button onclick="editGuru(${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteGuru(${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        container.appendChild(userItem);
+      });
+    }
+
+    function loadAdminList() {
+      const container = document.getElementById('adminList');
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      
+      container.innerHTML = '';
+      
+      if (loginAdminData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada data admin</div>';
+        return;
+      }
+      
+      loginAdminData.forEach((admin, index) => {
+        const userItem = document.createElement('div');
+        userItem.className = 'user-item';
+        userItem.innerHTML = `
+          <div class="user-info">
+            <div class="user-name">${escapeHtml(admin.name)}</div>
+            <div class="user-details">
+              Username: ${escapeHtml(admin.username)} | Password: ${escapeHtml(admin.password)}
+            </div>
+          </div>
+          <div class="user-actions">
+            <button onclick="editAdmin(${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteAdmin(${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        container.appendChild(userItem);
+      });
+    }
+
+    function addNewSiswa() {
+      const name = document.getElementById('newSiswaName').value.trim();
+      const nis = document.getElementById('newSiswaNIS').value.trim();
+      const ttl = document.getElementById('newSiswaTTL').value;
+      const gender = document.getElementById('newSiswaGender').value;
+      const password = document.getElementById('newSiswaPassword').value.trim();
+      
+      if (!name || !nis || !ttl || !gender) {
+        alert('Harap lengkapi semua data siswa!');
+        return;
+      }
+      
+      if (nis.length !== 7 || isNaN(nis)) {
+        alert('NIS harus 7 digit angka!');
+        return;
+      }
+      
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      
+      // Cek apakah NIS sudah ada
+      if (loginSiswaData.find(s => s.nis === nis)) {
+        alert('Siswa dengan NIS ini sudah terdaftar!');
+        return;
+      }
+      
+      // Tambahkan siswa baru
+      loginSiswaData.push({
+        name: name,
+        nis: nis,
+        ttl: ttl,
+        gender: gender,
+        password: password
+      });
+      
+      localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(loginSiswaData));
+      
+      // Reset form
+      document.getElementById('newSiswaName').value = '';
+      document.getElementById('newSiswaNIS').value = '';
+      document.getElementById('newSiswaTTL').value = '';
+      document.getElementById('newSiswaGender').value = '';
+      document.getElementById('newSiswaPassword').value = '';
+      
+      alert('Siswa berhasil ditambahkan!');
+      loadSiswaList();
+    }
+
+    function addNewGuru() {
+      const name = document.getElementById('newGuruName').value.trim();
+      const username = document.getElementById('newGuruUsername').value.trim();
+      const password = document.getElementById('newGuruPassword').value.trim();
+      
+      if (!name || !username || !password) {
+        alert('Harap lengkapi semua data guru!');
+        return;
+      }
+      
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      
+      // Cek apakah username sudah ada
+      if (loginGuruData.find(g => g.username === username)) {
+        alert('Guru dengan username ini sudah terdaftar!');
+        return;
+      }
+      
+      // Tambahkan guru baru
+      loginGuruData.push({
+        name: name,
+        username: username,
+        password: password
+      });
+      
+      localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(loginGuruData));
+      
+      // Reset form
+      document.getElementById('newGuruName').value = '';
+      document.getElementById('newGuruUsername').value = '';
+      document.getElementById('newGuruPassword').value = '';
+      
+      alert('Guru berhasil ditambahkan!');
+      loadGuruList();
+    }
+
+    function addNewAdmin() {
+      const name = document.getElementById('newAdminName').value.trim();
+      const username = document.getElementById('newAdminUsername').value.trim();
+      const password = document.getElementById('newAdminPassword').value.trim();
+      
+      if (!name || !username || !password) {
+        alert('Harap lengkapi semua data admin!');
+        return;
+      }
+      
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      
+      // Cek apakah username sudah ada
+      if (loginAdminData.find(a => a.username === username)) {
+        alert('Admin dengan username ini sudah terdaftar!');
+        return;
+      }
+      
+      // Tambahkan admin baru
+      loginAdminData.push({
+        name: name,
+        username: username,
+        password: password
+      });
+      
+      localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(loginAdminData));
+      
+      // Reset form
+      document.getElementById('newAdminName').value = '';
+      document.getElementById('newAdminUsername').value = '';
+      document.getElementById('newAdminPassword').value = '';
+      
+      alert('Admin berhasil ditambahkan!');
+      loadAdminList();
+    }
+
+    function editSiswa(index) {
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      const siswa = loginSiswaData[index];
+      
+      const newName = prompt('Edit nama siswa:', siswa.name);
+      if (newName === null) return;
+      
+      const newNIS = prompt('Edit NIS siswa (7 digit):', siswa.nis);
+      if (newNIS === null) return;
+      
+      if (newNIS.length !== 7 || isNaN(newNIS)) {
+        alert('NIS harus 7 digit angka!');
+        return;
+      }
+      
+      const newTTL = prompt('Edit TTL siswa (YYYY-MM-DD):', siswa.ttl);
+      if (newTTL === null) return;
+      
+      const newGender = prompt('Edit gender siswa (Laki-laki/Perempuan):', siswa.gender);
+      if (newGender === null) return;
+      
+      const newPassword = prompt('Edit password siswa (kosongkan jika tidak ingin mengubah):', siswa.password || '');
+      
+      // Update data
+      siswa.name = newName.trim();
+      siswa.nis = newNIS;
+      siswa.ttl = newTTL;
+      siswa.gender = newGender;
+      if (newPassword !== null && newPassword !== '') {
+        siswa.password = newPassword;
+      }
+      
+      localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(loginSiswaData));
+      alert('Data siswa berhasil diperbarui!');
+      loadSiswaList();
+    }
+
+    function editGuru(index) {
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      const guru = loginGuruData[index];
+      
+      const newName = prompt('Edit nama guru:', guru.name);
+      if (newName === null) return;
+      
+      const newUsername = prompt('Edit username guru:', guru.username);
+      if (newUsername === null) return;
+      
+      const newPassword = prompt('Edit password guru:', guru.password);
+      if (newPassword === null) return;
+      
+      // Update data
+      guru.name = newName.trim();
+      guru.username = newUsername;
+      guru.password = newPassword;
+      
+      localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(loginGuruData));
+      alert('Data guru berhasil diperbarui!');
+      loadGuruList();
+    }
+
+    function editAdmin(index) {
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      const admin = loginAdminData[index];
+      
+      const newName = prompt('Edit nama admin:', admin.name);
+      if (newName === null) return;
+      
+      const newUsername = prompt('Edit username admin:', admin.username);
+      if (newUsername === null) return;
+      
+      const newPassword = prompt('Edit password admin:', admin.password);
+      if (newPassword === null) return;
+      
+      // Update data
+      admin.name = newName.trim();
+      admin.username = newUsername;
+      admin.password = newPassword;
+      
+      localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(loginAdminData));
+      alert('Data admin berhasil diperbarui!');
+      loadAdminList();
+    }
+
+    function deleteSiswa(index) {
+      if (!confirm('Hapus data siswa ini?')) return;
+      
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      loginSiswaData.splice(index, 1);
+      localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(loginSiswaData));
+      
+      alert('Siswa berhasil dihapus!');
+      loadSiswaList();
+    }
+
+    function deleteGuru(index) {
+      if (!confirm('Hapus data guru ini?')) return;
+      
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      loginGuruData.splice(index, 1);
+      localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(loginGuruData));
+      
+      alert('Guru berhasil dihapus!');
+      loadGuruList();
+    }
+
+    function deleteAdmin(index) {
+      if (!confirm('Hapus data admin ini?')) return;
+      
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      
+      // Cegah penghapusan admin terakhir
+      if (loginAdminData.length <= 1) {
+        alert('Tidak dapat menghapus admin terakhir!');
+        return;
+      }
+      
+      loginAdminData.splice(index, 1);
+      localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(loginAdminData));
+      
+      alert('Admin berhasil dihapus!');
+      loadAdminList();
+    }
+
+    /* ---------- RENDER MAPEL GRID ---------- */
+    function renderMapelGrid() {
+      const container = document.getElementById('mapelGrid');
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      
+      container.innerHTML = '';
+      
+      mapelData.forEach(mapel => {
+        const mapelCard = document.createElement('div');
+        mapelCard.className = 'mapelCard';
+        mapelCard.style.borderLeft = `4px solid ${mapel.color}`;
+        mapelCard.innerHTML = `
+          <h3>${escapeHtml(mapel.name)}</h3>
+          <div class="small">Klik untuk melihat materi</div>
+        `;
+        mapelCard.onclick = () => openMapel(mapel.id);
+        container.appendChild(mapelCard);
+      });
+    }
+
+    function openMapel(mapelId) {
+      currentMapel = mapelId;
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapel = mapelData.find(m => m.id === mapelId);
+      
+      if (mapel) {
+        document.getElementById('materiPageTitle').textContent = `Materi ${mapel.name}`;
+        renderMateriGrid(mapelId);
+        showSection('materiPage');
+      }
+    }
+
+    function renderMateriGrid(mapelId) {
+      const container = document.getElementById('materiGrid');
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelMateri = materiData[mapelId] || [];
+      
+      container.innerHTML = '';
+      
+      if (mapelMateri.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada materi untuk mapel ini</div>';
+        return;
+      }
+      
+      mapelMateri.forEach(materi => {
+        if (materi.status !== 'active') return;
+        
+        const materiCard = document.createElement('div');
+        materiCard.className = 'materiCard';
+        materiCard.innerHTML = `
+          <div class="materiIcon">📚</div>
+          <div class="materiBody">
+            <h3>${escapeHtml(materi.title)}</h3>
+            <p>${escapeHtml(materi.summary)}</p>
+          </div>
+        `;
+        materiCard.onclick = () => openMaterial(materi.id);
+        container.appendChild(materiCard);
+      });
+    }
+
+    function openMaterial(materiId) {
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelMateri = materiData[currentMapel] || [];
+      const materi = mapelMateri.find(m => m.id === materiId);
+      
+      if (materi) {
+        currentMaterial = materi;
+        document.getElementById('detailTitle').textContent = materi.title;
+        document.getElementById('detailContent').innerHTML = materi.content;
+        showSection('detailMateriPage');
+      }
+    }
+
+    /* ---------- KUIS FUNCTIONS ---------- */
+    function startQuiz() {
+      // Ambil pengaturan yang dipilih
+      selectedTingkat = document.getElementById('quizLevel').value;
+      selectedJumlahSoal = parseInt(document.getElementById('quizCount').value);
+      selectedTimePerQ = parseInt(document.getElementById('quizTime').value);
+      
+      // Ambil soal berdasarkan mapel, materi, dan tingkat
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      const mapelSoal = soalData[currentMapel] || {};
+      const materiSoal = mapelSoal[currentMaterial.id] || {};
+      const tingkatSoal = materiSoal[selectedTingkat] || [];
+      
+      if (tingkatSoal.length === 0) {
+        alert('Belum ada soal untuk tingkat ini');
+        return;
+      }
+      
+      // Acak soal dan ambil sesuai jumlah yang dipilih
+      currentQuestions = shuffleArray([...tingkatSoal]).slice(0, selectedJumlahSoal);
+      
+      if (currentQuestions.length === 0) {
+        alert('Tidak ada soal yang tersedia');
+        return;
+      }
+      
+      // Setup kuis
+      currentIndex = 0;
+      correctCount = 0;
+      score = 0;
+      timeLeft = selectedTimePerQ;
+      
+      // Tampilkan halaman kuis
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapel = mapelData.find(m => m.id === currentMapel);
+      
+      document.getElementById('labelName').textContent = student.name;
+      document.getElementById('labelMapel').textContent = mapel ? mapel.name : 'Unknown';
+      document.getElementById('quizHeader').textContent = `Kuis: ${currentMaterial.title}`;
+      
+      showSection('quizPage');
+      loadQuestion();
+      startTimer();
+    }
+
+    function loadQuestion() {
+      if (currentIndex >= currentQuestions.length) {
+        endQuiz();
+        return;
+      }
+      
+      const question = currentQuestions[currentIndex];
+      document.getElementById('questionText').textContent = `${currentIndex + 1}. ${question.q}`;
+      
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+      
+      question.options.forEach((option, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+        optionButton.onclick = () => checkAnswer(index);
+        optionsContainer.appendChild(optionButton);
+      });
+      
+      // Reset timer
+      timeLeft = selectedTimePerQ;
+      document.getElementById('time').textContent = timeLeft;
+    }
+
+    function checkAnswer(selectedIndex) {
+      const question = currentQuestions[currentIndex];
+      
+      if (selectedIndex === question.answer) {
+        correctCount++;
+      }
+      
+      currentIndex++;
+      loadQuestion();
+    }
+
+    function skipQuestion() {
+      currentIndex++;
+      loadQuestion();
+    }
+
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('time').textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          currentIndex++;
+          loadQuestion();
+        }
+      }, 1000);
+    }
+
+    function endQuizEarly() {
+      if (confirm('Yakin ingin menyelesaikan kuis sekarang?')) {
+        endQuiz();
+      }
+    }
+
+    function endQuiz() {
+      if (timer) clearInterval(timer);
+      
+      // Hitung nilai
+      score = Math.round((correctCount / currentQuestions.length) * 100);
+      
+      // Simpan hasil
+      const hasil = {
+        name: student.name,
+        nis: student.nis,
+        ttl: student.ttl,
+        gender: student.gender,
+        mapel: currentMapel,
+        materi: currentMaterial.id,
+        tingkat: selectedTingkat,
+        jumlahSoal: selectedJumlahSoal,
+        timerPerSoal: selectedTimePerQ,
+        nilai: score,
+        benar: correctCount,
+        total: currentQuestions.length,
+        waktuTersisa: timeLeft,
+        tanggal: new Date().toISOString()
+      };
+      
+      const nilaiData = JSON.parse(localStorage.getItem(KEY_NILAI)) || [];
+      nilaiData.push(hasil);
+      localStorage.setItem(KEY_NILAI, JSON.stringify(nilaiData));
+      
+      // Tampilkan hasil
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapel = mapelData.find(m => m.id === currentMapel);
+      const tingkatData = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      const tingkat = tingkatData.tingkatKesulitan.find(t => t.id === selectedTingkat);
+      
+      document.getElementById('resName').textContent = student.name;
+      document.getElementById('resMapel').textContent = mapel ? mapel.name : 'Unknown';
+      document.getElementById('resMateri').textContent = currentMaterial.title;
+      document.getElementById('resLevel').textContent = tingkat ? tingkat.name : selectedTingkat;
+      document.getElementById('resCorrect').textContent = correctCount;
+      document.getElementById('resTotal').textContent = currentQuestions.length;
+      document.getElementById('resScore').textContent = score;
+      
+      showSection('resultPage');
+    }
+
+    /* ---------- KELOLA MATERI FUNCTIONS ---------- */
+    function renderMapelListForMateri() {
+      const container = document.getElementById('mapelListMateri');
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      
+      container.innerHTML = '';
+      
+      if (mapelData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada mapel</div>';
+        return;
+      }
+      
+      mapelData.forEach(mapel => {
+        const mapelItem = document.createElement('div');
+        mapelItem.className = 'mapel-item';
+        mapelItem.style.borderLeftColor = mapel.color;
+        
+        const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+        const jumlahMateri = materiData[mapel.id] ? materiData[mapel.id].length : 0;
+        
+        mapelItem.innerHTML = `
+          <h4>${escapeHtml(mapel.name)}</h4>
+          <p>${jumlahMateri} materi</p>
+          <div class="materi-actions">
+            <button onclick="pilihMapelForMateri('${mapel.id}')" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Lihat Materi</button>
+          </div>
+        `;
+        
+        container.appendChild(mapelItem);
+      });
+    }
+
+    function pilihMapelForMateri(mapelId) {
+      selectedMapelForMateri = mapelId;
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapel = mapelData.find(m => m.id === mapelId);
+      
+      document.getElementById('judulMapelMateri').innerText = `Materi untuk ${mapel ? mapel.name : 'Mapel'}`;
+      document.getElementById('pilihMapelSection').classList.add('hidden');
+      document.getElementById('daftarMateriSection').classList.remove('hidden');
+      
+      renderMateriListForMapel(mapelId);
+    }
+
+    function backToMapelList() {
+      selectedMapelForMateri = null;
+      document.getElementById('pilihMapelSection').classList.remove('hidden');
+      document.getElementById('daftarMateriSection').classList.add('hidden');
+      document.getElementById('materiInfo').innerText = 'Pilih mapel untuk melihat materi';
+    }
+
+    function renderMateriListForMapel(mapelId) {
+      const container = document.getElementById('materiList');
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelMateri = materiData[mapelId] || [];
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapel = mapelData.find(m => m.id === mapelId);
+      
+      container.innerHTML = '';
+      
+      if (mapelMateri.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada materi untuk mapel ini</div>';
+        document.getElementById('materiInfo').innerText = `Menampilkan 0 materi untuk ${mapel ? mapel.name : 'mapel ini'}`;
+        return;
+      }
+      
+      mapelMateri.forEach((materi) => {
+        const materiItem = document.createElement('div');
+        materiItem.className = 'materi-item';
+        materiItem.style.borderLeftColor = mapel ? mapel.color : '#0b63b8';
+        
+        materiItem.innerHTML = `
+          <span class="status-badge status-${materi.status}">
+            ${materi.status === 'active' ? 'Aktif' : 'Nonaktif'}
+          </span>
+          <h4>${escapeHtml(materi.title)}</h4>
+          <p><strong>Ringkasan:</strong> ${escapeHtml(materi.summary.substring(0, 100))}${materi.summary.length > 100 ? '...' : ''}</p>
+          <div class="materi-actions">
+            <button onclick="editMateri('${mapelId}', '${materi.id}')" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteMateri('${mapelId}', '${materi.id}')" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        
+        container.appendChild(materiItem);
+      });
+      
+      document.getElementById('materiInfo').innerText = `Menampilkan ${mapelMateri.length} materi untuk ${mapel ? mapel.name : 'mapel ini'}`;
+    }
+
+    function showAddMateriForm() {
+      editingMateriId = null;
+      document.getElementById('materiModalTitle').innerText = 'Tambah Materi Baru';
+      document.getElementById('materiForm').reset();
+      document.getElementById('modalStatus').value = 'active';
+      
+      const mapelSelect = document.getElementById('modalMapelId');
+      mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran</option>';
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      mapelData.forEach(mapel => {
+        const option = document.createElement('option');
+        option.value = mapel.id;
+        option.textContent = mapel.name;
+        if (selectedMapelForMateri && mapel.id === selectedMapelForMateri) {
+          option.selected = true;
+        }
+        mapelSelect.appendChild(option);
+      });
+      
+      document.getElementById('materiModal').style.display = 'block';
+    }
+
+    function editMateri(mapelId, materiId) {
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelMateri = materiData[mapelId] || [];
+      const materi = mapelMateri.find(m => m.id === materiId);
+      
+      if (!materi) {
+        alert('Materi tidak ditemukan');
+        return;
+      }
+      
+      editingMateriId = { mapelId, materiId };
+      document.getElementById('materiModalTitle').innerText = 'Edit Materi';
+      
+      document.getElementById('modalMapelId').value = mapelId;
+      document.getElementById('modalJudulMateri').value = materi.title;
+      document.getElementById('modalDeskripsi').value = materi.summary;
+      document.getElementById('modalKontenMateri').value = stripHtml(materi.content);
+      document.getElementById('modalStatus').value = materi.status || 'active';
+      
+      const mapelSelect = document.getElementById('modalMapelId');
+      mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran</option>';
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      mapelData.forEach(mapel => {
+        const option = document.createElement('option');
+        option.value = mapel.id;
+        option.textContent = mapel.name;
+        mapelSelect.appendChild(option);
+      });
+      
+      document.getElementById('materiModal').style.display = 'block';
+    }
+
+    function closeMateriModal() {
+      document.getElementById('materiModal').style.display = 'none';
+      editingMateriId = null;
+    }
+
+    // Handle form submission materi
+    document.getElementById('materiForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      saveMateriForm();
+    });
+
+    function saveMateriForm() {
+      const mapelId = document.getElementById('modalMapelId').value;
+      const judulMateri = document.getElementById('modalJudulMateri').value.trim();
+      const deskripsi = document.getElementById('modalDeskripsi').value.trim();
+      const kontenMateri = document.getElementById('modalKontenMateri').value.trim();
+      const status = document.getElementById('modalStatus').value;
+      
+      if (!mapelId || !judulMateri || !deskripsi || !kontenMateri) {
+        alert('Harap lengkapi semua field yang wajib diisi');
+        return;
+      }
+      
+      let materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      
+      if (editingMateriId) {
+        // Edit materi yang sudah ada
+        const { mapelId: oldMapelId, materiId } = editingMateriId;
+        const oldMapelMateri = materiData[oldMapelId] || [];
+        
+        // Hapus dari mapel lama jika pindah mapel
+        if (oldMapelId !== mapelId) {
+          materiData[oldMapelId] = oldMapelMateri.filter(m => m.id !== materiId);
+        }
+        
+        // Tambah ke mapel baru (atau update di mapel yang sama)
+        const mapelMateri = materiData[mapelId] || [];
+        const existingIndex = mapelMateri.findIndex(m => m.id === materiId);
+        
+        if (existingIndex !== -1) {
+          // Update di mapel yang sama
+          mapelMateri[existingIndex] = {
+            ...mapelMateri[existingIndex],
+            title: judulMateri,
+            summary: deskripsi,
+            content: `<h3>${judulMateri}</h3><p>${escapeHtml(kontenMateri).replace(/\n/g, '<br>')}</p>`,
+            status: status
+          };
+        } else {
+          // Pindah ke mapel baru
+          const originalMateri = oldMapelMateri.find(m => m.id === materiId);
+          mapelMateri.push({
+            ...originalMateri,
+            title: judulMateri,
+            summary: deskripsi,
+            content: `<h3>${judulMateri}</h3><p>${escapeHtml(kontenMateri).replace(/\n/g, '<br>')}</p>`,
+            status: status
+          });
+        }
+        
+        materiData[mapelId] = mapelMateri;
+      } else {
+        // Tambah materi baru
+        const newId = 'materi_' + Date.now();
+        const mapelMateri = materiData[mapelId] || [];
+        
+        mapelMateri.push({
+          id: newId,
+          title: judulMateri,
+          summary: deskripsi,
+          content: `<h3>${judulMateri}</h3><p>${escapeHtml(kontenMateri).replace(/\n/g, '<br>')}</p>`,
+          status: status
+        });
+        
+        materiData[mapelId] = mapelMateri;
+      }
+      
+      localStorage.setItem(KEY_MATERI, JSON.stringify(materiData));
+      alert(editingMateriId ? 'Materi berhasil diperbarui' : 'Materi berhasil ditambahkan');
+      closeMateriModal();
+      
+      if (selectedMapelForMateri) {
+        renderMateriListForMapel(selectedMapelForMateri);
+      } else {
+        renderMapelListForMateri();
+      }
+    }
+
+    function deleteMateri(mapelId, materiId) {
+      if (!confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
+        return;
+      }
+      
+      let materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelMateri = materiData[mapelId] || [];
+      materiData[mapelId] = mapelMateri.filter(m => m.id !== materiId);
+      
+      localStorage.setItem(KEY_MATERI, JSON.stringify(materiData));
+      alert('Materi berhasil dihapus');
+      
+      if (selectedMapelForMateri) {
+        renderMateriListForMapel(selectedMapelForMateri);
+      }
+    }
+
+    /* ---------- KELOLA MAPEL FUNCTIONS ---------- */
+    function renderMapelList() {
+      const container = document.getElementById('mapelList');
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      
+      container.innerHTML = '';
+      
+      if (mapelData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada mapel</div>';
+        return;
+      }
+      
+      mapelData.forEach(mapel => {
+        const mapelItem = document.createElement('div');
+        mapelItem.className = 'mapel-item';
+        mapelItem.style.borderLeftColor = mapel.color;
+        
+        const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+        const jumlahMateri = materiData[mapel.id] ? materiData[mapel.id].length : 0;
+        
+        mapelItem.innerHTML = `
+          <h4>${escapeHtml(mapel.name)}</h4>
+          <p>${jumlahMateri} materi</p>
+          <div class="materi-actions">
+            <button onclick="editMapel('${mapel.id}')" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteMapel('${mapel.id}')" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        
+        container.appendChild(mapelItem);
+      });
+    }
+
+    function showAddMapelForm() {
+      editingMapelId = null;
+      document.getElementById('mapelModalTitle').innerText = 'Tambah Mapel Baru';
+      document.getElementById('mapelForm').reset();
+      document.getElementById('modalWarnaMapel').value = '#0b63b8';
+      
+      document.getElementById('mapelModal').style.display = 'block';
+    }
+
+    function editMapel(mapelId) {
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapel = mapelData.find(m => m.id === mapelId);
+      
+      if (!mapel) {
+        alert('Mapel tidak ditemukan');
+        return;
+      }
+      
+      editingMapelId = mapelId;
+      document.getElementById('mapelModalTitle').innerText = 'Edit Mapel';
+      
+      document.getElementById('modalNamaMapel').value = mapel.name;
+      document.getElementById('modalWarnaMapel').value = mapel.color;
+      
+      document.getElementById('mapelModal').style.display = 'block';
+    }
+
+    function closeMapelModal() {
+      document.getElementById('mapelModal').style.display = 'none';
+      editingMapelId = null;
+    }
+
+    // Handle form submission mapel
+    document.getElementById('mapelForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      saveMapelForm();
+    });
+
+    function saveMapelForm() {
+      const namaMapel = document.getElementById('modalNamaMapel').value.trim();
+      const warnaMapel = document.getElementById('modalWarnaMapel').value;
+      
+      if (!namaMapel) {
+        alert('Harap lengkapi nama mapel');
+        return;
+      }
+      
+      let mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      
+      if (editingMapelId) {
+        // Edit mapel yang sudah ada
+        const index = mapelData.findIndex(m => m.id === editingMapelId);
+        if (index !== -1) {
+          mapelData[index] = {
+            ...mapelData[index],
+            name: namaMapel,
+            color: warnaMapel
+          };
+        }
+      } else {
+        // Tambah mapel baru
+        const newId = namaMapel.toLowerCase().replace(/\s+/g, '_');
+        
+        if (mapelData.find(m => m.id === newId)) {
+          alert('Mapel dengan nama tersebut sudah ada');
+          return;
+        }
+        
+        mapelData.push({
+          id: newId,
+          name: namaMapel,
+          color: warnaMapel
+        });
+      }
+      
+      localStorage.setItem(KEY_MAPEL, JSON.stringify(mapelData));
+      alert(editingMapelId ? 'Mapel berhasil diperbarui' : 'Mapel berhasil ditambahkan');
+      closeMapelModal();
+      renderMapelList();
+      renderMapelListForMateri();
+    }
+
+    function deleteMapel(mapelId) {
+      if (!confirm('Apakah Anda yakin ingin menghapus mapel ini? Semua materi terkait juga akan dihapus.')) {
+        return;
+      }
+      
+      let mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      mapelData = mapelData.filter(m => m.id !== mapelId);
+      
+      let materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      delete materiData[mapelId];
+      
+      let soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      delete soalData[mapelId];
+      
+      localStorage.setItem(KEY_MAPEL, JSON.stringify(mapelData));
+      localStorage.setItem(KEY_MATERI, JSON.stringify(materiData));
+      localStorage.setItem(KEY_SOAL, JSON.stringify(soalData));
+      alert('Mapel berhasil dihapus');
+      renderMapelList();
+      renderMapelListForMateri();
+    }
+
+    /* ---------- KELOLA SOAL FUNCTIONS ---------- */
+    function loadMateriForSoal() {
+      const mapelId = document.getElementById('soalMapelSelect').value;
+      selectedMapelForSoal = mapelId;
+      
+      const materiSelect = document.getElementById('soalMateriSelect');
+      materiSelect.innerHTML = '<option value="">Pilih Materi</option>';
+      
+      if (!mapelId) return;
+      
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelMateri = materiData[mapelId] || [];
+      
+      mapelMateri.forEach(materi => {
+        const option = document.createElement('option');
+        option.value = materi.id;
+        option.textContent = materi.title;
+        materiSelect.appendChild(option);
+      });
+      
+      loadTingkatForSoal();
+    }
+
+    function loadTingkatForSoal() {
+      const materiId = document.getElementById('soalMateriSelect').value;
+      selectedMateriForSoal = materiId;
+      
+      const tingkatSelect = document.getElementById('soalTingkatSelect');
+      tingkatSelect.innerHTML = '<option value="">Pilih Tingkat</option>';
+      
+      if (!materiId) return;
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || {};
+      const tingkatList = pengaturan.tingkatKesulitan || [];
+      
+      tingkatList.forEach(tingkat => {
+        const option = document.createElement('option');
+        option.value = tingkat.id;
+        option.textContent = tingkat.name;
+        tingkatSelect.appendChild(option);
+      });
+      
+      loadSoalList();
+    }
+
+    function loadSoalList() {
+      const mapelId = selectedMapelForSoal;
+      const materiId = selectedMateriForSoal;
+      const tingkatId = document.getElementById('soalTingkatSelect').value;
+      selectedTingkatForSoal = tingkatId;
+      
+      const container = document.getElementById('soalList');
+      container.innerHTML = '';
+      
+      if (!mapelId || !materiId || !tingkatId) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Pilih mapel, materi, dan tingkat terlebih dahulu</div>';
+        return;
+      }
+      
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      const mapelSoal = soalData[mapelId] || {};
+      const materiSoal = mapelSoal[materiId] || {};
+      const tingkatSoal = materiSoal[tingkatId] || [];
+      
+      if (tingkatSoal.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#6b7b8c;">Belum ada soal untuk tingkat ini</div>';
+        return;
+      }
+      
+      tingkatSoal.forEach((soal, index) => {
+        const soalItem = document.createElement('div');
+        soalItem.className = 'soal-item';
+        
+        soalItem.innerHTML = `
+          <div class="soal-pertanyaan">${index + 1}. ${escapeHtml(soal.q)}</div>
+          ${soal.options.map((opsi, opsiIndex) => `
+            <div class="soal-opsi">
+              ${String.fromCharCode(65 + opsiIndex)}. ${escapeHtml(opsi)}
+              ${opsiIndex === soal.answer ? '<span class="soal-jawaban-benar">✓ Benar</span>' : ''}
+            </div>
+          `).join('')}
+          <div style="margin-top:10px;">
+            <button onclick="editSoal('${mapelId}', '${materiId}', '${tingkatId}', ${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteSoal('${mapelId}', '${materiId}', '${tingkatId}', ${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        
+        container.appendChild(soalItem);
+      });
+    }
+
+    function showAddSoalForm() {
+      if (!selectedMapelForSoal || !selectedMateriForSoal || !selectedTingkatForSoal) {
+        alert('Pilih mapel, materi, dan tingkat terlebih dahulu');
+        return;
+      }
+      
+      editingSoalId = null;
+      document.getElementById('soalModalTitle').innerText = 'Tambah Soal Baru';
+      document.getElementById('soalForm').reset();
+      
+      // Inisialisasi opsi default (A, B, C, D)
+      opsiCount = 4;
+      renderOpsiList();
+      
+      document.getElementById('soalModal').style.display = 'block';
+    }
+
+    function renderOpsiList() {
+      const opsiList = document.getElementById('opsiList');
+      opsiList.innerHTML = '';
+      
+      // Update dropdown jawaban benar
+      const jawabanSelect = document.getElementById('modalJawabanBenar');
+      jawabanSelect.innerHTML = '<option value="">Pilih Jawaban Benar</option>';
+      
+      for (let i = 0; i < opsiCount; i++) {
+        const letter = String.fromCharCode(65 + i);
+        
+        // Tambah opsi ke list
+        const opsiItem = document.createElement('div');
+        opsiItem.className = 'opsi-item';
+        opsiItem.innerHTML = `
+          <div class="opsi-label">${letter}.</div>
+          <input type="text" class="opsi-input" id="opsi-${letter}" placeholder="Isi pilihan ${letter}" required>
+          <div class="opsi-actions">
+            <button type="button" class="opsi-action-btn opsi-remove" onclick="removeSpecificOpsi(${i})" ${opsiCount <= 2 ? 'disabled' : ''}>-</button>
+          </div>
+        `;
+        opsiList.appendChild(opsiItem);
+        
+        // Tambah opsi ke dropdown jawaban benar
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = letter;
+        jawabanSelect.appendChild(option);
+      }
+    }
+
+    function addOpsi() {
+      if (opsiCount >= 5) {
+        alert('Maksimal 5 pilihan jawaban');
+        return;
+      }
+      
+      opsiCount++;
+      renderOpsiList();
+    }
+
+    function removeOpsi() {
+      if (opsiCount <= 2) {
+        alert('Minimal 2 pilihan jawaban');
+        return;
+      }
+      
+      opsiCount--;
+      renderOpsiList();
+    }
+
+    function removeSpecificOpsi(index) {
+      if (opsiCount <= 2) {
+        alert('Minimal 2 pilihan jawaban');
+        return;
+      }
+      
+      // Hapus opsi pada index tertentu
+      const opsiList = document.getElementById('opsiList');
+      const opsiItems = opsiList.querySelectorAll('.opsi-item');
+      
+      if (index < opsiItems.length) {
+        opsiItems[index].remove();
+        opsiCount--;
+        
+        // Update label dan ID
+        const remainingItems = opsiList.querySelectorAll('.opsi-item');
+        remainingItems.forEach((item, newIndex) => {
+          const letter = String.fromCharCode(65 + newIndex);
+          item.querySelector('.opsi-label').textContent = `${letter}.`;
+          const input = item.querySelector('.opsi-input');
+          input.id = `opsi-${letter}`;
+          input.placeholder = `Isi pilihan ${letter}`;
+        });
+        
+        // Update dropdown jawaban benar
+        const jawabanSelect = document.getElementById('modalJawabanBenar');
+        jawabanSelect.innerHTML = '<option value="">Pilih Jawaban Benar</option>';
+        
+        for (let i = 0; i < opsiCount; i++) {
+          const letter = String.fromCharCode(65 + i);
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = letter;
+          jawabanSelect.appendChild(option);
+        }
+      }
+    }
+
+    function editSoal(mapelId, materiId, tingkatId, soalIndex) {
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      const soal = soalData[mapelId]?.[materiId]?.[tingkatId]?.[soalIndex];
+      
+      if (!soal) {
+        alert('Soal tidak ditemukan');
+        return;
+      }
+      
+      editingSoalId = { mapelId, materiId, tingkatId, soalIndex };
+      document.getElementById('soalModalTitle').innerText = 'Edit Soal';
+      
+      document.getElementById('modalPertanyaan').value = soal.q;
+      
+      // Set jumlah opsi berdasarkan soal yang ada
+      opsiCount = soal.options.length;
+      renderOpsiList();
+      
+      // Isi opsi
+      soal.options.forEach((opsi, index) => {
+        const letter = String.fromCharCode(65 + index);
+        document.getElementById(`opsi-${letter}`).value = opsi;
+      });
+      
+      document.getElementById('modalJawabanBenar').value = soal.answer;
+      
+      document.getElementById('soalModal').style.display = 'block';
+    }
+
+    function closeSoalModal() {
+      document.getElementById('soalModal').style.display = 'none';
+      editingSoalId = null;
+      opsiCount = 4; // Reset ke default
+    }
+
+    // Handle form submission soal
+    document.getElementById('soalForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      saveSoalForm();
+    });
+
+    function saveSoalForm() {
+      const pertanyaan = document.getElementById('modalPertanyaan').value.trim();
+      const jawabanBenar = parseInt(document.getElementById('modalJawabanBenar').value);
+      
+      // Ambil semua opsi
+      const options = [];
+      for (let i = 0; i < opsiCount; i++) {
+        const letter = String.fromCharCode(65 + i);
+        const opsiValue = document.getElementById(`opsi-${letter}`).value.trim();
+        if (!opsiValue) {
+          alert(`Harap isi pilihan ${letter}`);
+          return;
+        }
+        options.push(opsiValue);
+      }
+      
+      if (!pertanyaan || isNaN(jawabanBenar)) {
+        alert('Harap lengkapi pertanyaan dan pilih jawaban benar');
+        return;
+      }
+      
+      let soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      const { mapelId, materiId, tingkatId, soalIndex } = editingSoalId || {};
+      
+      const soalBaru = {
+        q: pertanyaan,
+        options: options,
+        answer: jawabanBenar
+      };
+      
+      if (editingSoalId) {
+        // Edit soal
+        if (!soalData[mapelId]) soalData[mapelId] = {};
+        if (!soalData[mapelId][materiId]) soalData[mapelId][materiId] = {};
+        if (!soalData[mapelId][materiId][tingkatId]) soalData[mapelId][materiId][tingkatId] = [];
+        
+        soalData[mapelId][materiId][tingkatId][soalIndex] = soalBaru;
+      } else {
+        // Tambah soal baru
+        if (!soalData[selectedMapelForSoal]) soalData[selectedMapelForSoal] = {};
+        if (!soalData[selectedMapelForSoal][selectedMateriForSoal]) soalData[selectedMapelForSoal][selectedMateriForSoal] = {};
+        if (!soalData[selectedMapelForSoal][selectedMateriForSoal][selectedTingkatForSoal]) {
+          soalData[selectedMapelForSoal][selectedMateriForSoal][selectedTingkatForSoal] = [];
+        }
+        
+        soalData[selectedMapelForSoal][selectedMateriForSoal][selectedTingkatForSoal].push(soalBaru);
+      }
+      
+      localStorage.setItem(KEY_SOAL, JSON.stringify(soalData));
+      alert(editingSoalId ? 'Soal berhasil diperbarui' : 'Soal berhasil ditambahkan');
+      closeSoalModal();
+      loadSoalList();
+    }
+
+    function deleteSoal(mapelId, materiId, tingkatId, soalIndex) {
+      if (!confirm('Apakah Anda yakin ingin menghapus soal ini?')) return;
+      
+      let soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      if (soalData[mapelId]?.[materiId]?.[tingkatId]) {
+        soalData[mapelId][materiId][tingkatId].splice(soalIndex, 1);
+        localStorage.setItem(KEY_SOAL, JSON.stringify(soalData));
+        alert('Soal berhasil dihapus');
+        loadSoalList();
+      }
+    }
+
+    /* ---------- PENGATURAN KUIS FUNCTIONS ---------- */
+    function renderPengaturanOptions() {
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      
+      const quizLevelSelect = document.getElementById('quizLevel');
+      if (quizLevelSelect) {
+        quizLevelSelect.innerHTML = '';
+        pengaturan.tingkatKesulitan.forEach(tingkat => {
+          const option = document.createElement('option');
+          option.value = tingkat.id;
+          option.textContent = tingkat.name;
+          quizLevelSelect.appendChild(option);
+        });
+      }
+      
+      const quizCountSelect = document.getElementById('quizCount');
+      if (quizCountSelect) {
+        quizCountSelect.innerHTML = '';
+        pengaturan.jumlahSoal.forEach(jumlah => {
+          const option = document.createElement('option');
+          option.value = jumlah;
+          option.textContent = `${jumlah} Soal`;
+          quizCountSelect.appendChild(option);
+        });
+      }
+      
+      const quizTimeSelect = document.getElementById('quizTime');
+      if (quizTimeSelect) {
+        quizTimeSelect.innerHTML = '';
+        pengaturan.waktuSoal.forEach(waktu => {
+          const option = document.createElement('option');
+          option.value = waktu;
+          option.textContent = `${waktu} detik`;
+          quizTimeSelect.appendChild(option);
+        });
+      }
+      
+      renderJumlahSoalList();
+      renderWaktuSoalList();
+      renderTingkatList();
+    }
+
+    function renderJumlahSoalList() {
+      const container = document.getElementById('jumlahSoalList');
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      
+      container.innerHTML = '';
+      pengaturan.jumlahSoal.forEach((jumlah, index) => {
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `
+          <div>${jumlah} Soal</div>
+          <div>
+            <button onclick="editJumlahSoal(${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteJumlahSoal(${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderWaktuSoalList() {
+      const container = document.getElementById('waktuSoalList');
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      
+      container.innerHTML = '';
+      pengaturan.waktuSoal.forEach((waktu, index) => {
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `
+          <div>${waktu} detik</div>
+          <div>
+            <button onclick="editWaktuSoal(${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteWaktuSoal(${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderTingkatList() {
+      const container = document.getElementById('tingkatList');
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      
+      container.innerHTML = '';
+      pengaturan.tingkatKesulitan.forEach((tingkat, index) => {
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `
+          <div>${tingkat.name} <span class="level-badge level-${tingkat.id}">${tingkat.id.toUpperCase()}</span></div>
+          <div>
+            <button onclick="editTingkat(${index})" class="ghost" style="background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff">Edit</button>
+            <button onclick="deleteTingkat(${index})" class="ghost" style="background:#f57b7b">Hapus</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addJumlahSoal() {
+      const newJumlah = parseInt(document.getElementById('newJumlahSoal').value);
+      if (isNaN(newJumlah) || newJumlah < 1 || newJumlah > 50) {
+        alert('Masukkan jumlah soal antara 1-50');
+        return;
+      }
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      if (pengaturan.jumlahSoal.includes(newJumlah)) {
+        alert('Jumlah soal ini sudah ada');
+        return;
+      }
+      
+      pengaturan.jumlahSoal.push(newJumlah);
+      pengaturan.jumlahSoal.sort((a, b) => a - b);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      
+      document.getElementById('newJumlahSoal').value = '';
+      renderJumlahSoalList();
+      renderPengaturanOptions();
+    }
+
+    function addWaktuSoal() {
+      const newWaktu = parseInt(document.getElementById('newWaktuSoal').value);
+      if (isNaN(newWaktu) || newWaktu < 5 || newWaktu > 300) {
+        alert('Masukkan waktu antara 5-300 detik');
+        return;
+      }
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      if (pengaturan.waktuSoal.includes(newWaktu)) {
+        alert('Waktu soal ini sudah ada');
+        return;
+      }
+      
+      pengaturan.waktuSoal.push(newWaktu);
+      pengaturan.waktuSoal.sort((a, b) => a - b);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      
+      document.getElementById('newWaktuSoal').value = '';
+      renderWaktuSoalList();
+      renderPengaturanOptions();
+    }
+
+    function addTingkat() {
+      const name = document.getElementById('newTingkatName').value.trim();
+      const id = document.getElementById('newTingkatId').value.trim().toLowerCase();
+      
+      if (!name || !id) {
+        alert('Harap isi nama dan ID tingkat');
+        return;
+      }
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      if (pengaturan.tingkatKesulitan.find(t => t.id === id)) {
+        alert('Tingkat dengan ID ini sudah ada');
+        return;
+      }
+      
+      pengaturan.tingkatKesulitan.push({ id, name });
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      
+      document.getElementById('newTingkatName').value = '';
+      document.getElementById('newTingkatId').value = '';
+      renderTingkatList();
+      renderPengaturanOptions();
+    }
+
+    function editJumlahSoal(index) {
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      const newValue = prompt('Edit jumlah soal:', pengaturan.jumlahSoal[index]);
+      if (newValue === null) return;
+      
+      const newJumlah = parseInt(newValue);
+      if (isNaN(newJumlah) || newJumlah < 1 || newJumlah > 50) {
+        alert('Masukkan jumlah soal antara 1-50');
+        return;
+      }
+      
+      pengaturan.jumlahSoal[index] = newJumlah;
+      pengaturan.jumlahSoal.sort((a, b) => a - b);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      renderJumlahSoalList();
+      renderPengaturanOptions();
+    }
+
+    function editWaktuSoal(index) {
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      const newValue = prompt('Edit waktu soal (detik):', pengaturan.waktuSoal[index]);
+      if (newValue === null) return;
+      
+      const newWaktu = parseInt(newValue);
+      if (isNaN(newWaktu) || newWaktu < 5 || newWaktu > 300) {
+        alert('Masukkan waktu antara 5-300 detik');
+        return;
+      }
+      
+      pengaturan.waktuSoal[index] = newWaktu;
+      pengaturan.waktuSoal.sort((a, b) => a - b);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      renderWaktuSoalList();
+      renderPengaturanOptions();
+    }
+
+    function editTingkat(index) {
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      const tingkat = pengaturan.tingkatKesulitan[index];
+      
+      const newName = prompt('Edit nama tingkat:', tingkat.name);
+      if (newName === null) return;
+      
+      tingkat.name = newName.trim();
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      renderTingkatList();
+      renderPengaturanOptions();
+    }
+
+    function deleteJumlahSoal(index) {
+      if (!confirm('Hapus opsi jumlah soal ini?')) return;
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      pengaturan.jumlahSoal.splice(index, 1);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      renderJumlahSoalList();
+      renderPengaturanOptions();
+    }
+
+    function deleteWaktuSoal(index) {
+      if (!confirm('Hapus opsi waktu soal ini?')) return;
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      pengaturan.waktuSoal.splice(index, 1);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      renderWaktuSoalList();
+      renderPengaturanOptions();
+    }
+
+    function deleteTingkat(index) {
+      if (!confirm('Hapus tingkat kesulitan ini?')) return;
+      
+      const pengaturan = JSON.parse(localStorage.getItem(KEY_PENGATURAN)) || defaultPengaturan;
+      pengaturan.tingkatKesulitan.splice(index, 1);
+      localStorage.setItem(KEY_PENGATURAN, JSON.stringify(pengaturan));
+      renderTingkatList();
+      renderPengaturanOptions();
+    }
+
+    function saveAllPengaturan() {
+      alert('Semua pengaturan telah disimpan');
+    }
+
+    function resetAllPengaturan() {
+      if (confirm('Reset semua pengaturan ke default?')) {
+        localStorage.setItem(KEY_PENGATURAN, JSON.stringify(defaultPengaturan));
+        alert('Pengaturan direset ke default');
+        renderJumlahSoalList();
+        renderWaktuSoalList();
+        renderTingkatList();
+        renderPengaturanOptions();
+      }
+    }
+
+    /* ---------- LOGIN GURU ---------- */
+    function loginGuru(){
+      const name = document.getElementById('guruName').value.trim();
+      const pass = document.getElementById('guruPass').value.trim();
+      
+      if(!name){ 
+        alert('Masukkan nama guru.'); 
+        return; 
+      }
+      
+      // Cek login guru
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      const guru = loginGuruData.find(g => g.username === name.toLowerCase() || g.name.toLowerCase() === name.toLowerCase());
+      
+      if (!guru) {
+        alert('Guru tidak terdaftar!');
+        return;
+      }
+      
+      if(guru.password !== pass){ 
+        alert('Password salah.'); 
+        return; 
+      }
+      
+      currentGuru = guru.name;
+      document.getElementById('labelGuruName').innerText = currentGuru;
+      
+      showSection('guruPanel');
+      showGuruTab('nilai');
+    }
+
+    function logoutGuru(){ 
+      if(confirm('Yakin ingin logout?')){ 
+        currentGuru = null; 
+        showSection('logoPage'); 
+      } 
+    }
+
+    /* ---------- GURU UI ---------- */
+    function showGuruTab(tab){
+      document.getElementById('tabNilai').classList.remove('active');
+      document.getElementById('tabMapel').classList.remove('active');
+      document.getElementById('tabMateri').classList.remove('active');
+      document.getElementById('tabSoal').classList.remove('active');
+      document.getElementById('tabPengaturan').classList.remove('active');
+      document.getElementById('tabExcel').classList.remove('active');
+      
+      document.getElementById('panelNilai').classList.add('hidden');
+      document.getElementById('panelMapel').classList.add('hidden');
+      document.getElementById('panelMateri').classList.add('hidden');
+      document.getElementById('panelSoal').classList.add('hidden');
+      document.getElementById('panelPengaturan').classList.add('hidden');
+      document.getElementById('panelExcel').classList.add('hidden');
+      
+      if(tab==='nilai'){ 
+        document.getElementById('tabNilai').classList.add('active'); 
+        document.getElementById('panelNilai').classList.remove('hidden');
+        renderNilaiTable();
+      }
+      else if(tab==='mapel'){ 
+        document.getElementById('tabMapel').classList.add('active'); 
+        document.getElementById('panelMapel').classList.remove('hidden');
+        renderMapelList();
+      }
+      else if(tab==='materi'){ 
+        document.getElementById('tabMateri').classList.add('active'); 
+        document.getElementById('panelMateri').classList.remove('hidden');
+        renderMapelListForMateri();
+        backToMapelList();
+      }
+      else if(tab==='soal'){ 
+        document.getElementById('tabSoal').classList.add('active'); 
+        document.getElementById('panelSoal').classList.remove('hidden');
+        populateSoalSelectors();
+      }
+      else if(tab==='pengaturan'){ 
+        document.getElementById('tabPengaturan').classList.add('active'); 
+        document.getElementById('panelPengaturan').classList.remove('hidden');
+        renderPengaturanOptions();
+      }
+      else if(tab==='excel'){ 
+        document.getElementById('tabExcel').classList.add('active'); 
+        document.getElementById('panelExcel').classList.remove('hidden');
+      }
+    }
+
+    function populateSoalSelectors() {
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const mapelSelect = document.getElementById('soalMapelSelect');
+      
+      mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran</option>';
+      mapelData.forEach(mapel => {
+        const option = document.createElement('option');
+        option.value = mapel.id;
+        option.textContent = mapel.name;
+        mapelSelect.appendChild(option);
+      });
+    }
+
+    /* ---------- ADMIN FUNCTIONS ---------- */
+    function loginAdmin() {
+      const username = document.getElementById('adminUsername').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      
+      // Cek login admin
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      const admin = loginAdminData.find(a => a.username === username);
+      
+      if (!admin) {
+        alert('Username atau password admin salah!');
+        return;
+      }
+      
+      if(admin.password !== password){ 
+        alert('Username atau password admin salah!'); 
+        return; 
+      }
+      
+      currentAdmin = admin;
+      document.getElementById('labelAdminName').textContent = admin.name;
+      showSection('adminPanel');
+      showAdminTab('dashboard');
+      loadAdminDashboard();
+    }
+
+    // PERBAIKAN FUNGSI LOGOUT ADMIN
+    function logoutAdmin() {
+      console.log('Logout admin dipanggil'); // Debug log
+      if (confirm('Yakin ingin logout dari panel admin?')) {
+        currentAdmin = null;
+        showSection('logoPage');
+      }
+    }
+
+    function showAdminTab(tab) {
+      console.log('Mengaktifkan tab:', tab); // Debug log
+      
+      // Reset semua tab
+      document.getElementById('tabAdminDashboard').classList.remove('active');
+      document.getElementById('tabAdminUsers').classList.remove('active');
+      document.getElementById('tabAdminLogins').classList.remove('active');
+      document.getElementById('tabAdminBackup').classList.remove('active');
+      document.getElementById('tabAdminSystem').classList.remove('active');
+      
+      // Sembunyikan semua panel
+      document.getElementById('panelAdminDashboard').classList.add('hidden');
+      document.getElementById('panelAdminUsers').classList.add('hidden');
+      document.getElementById('panelAdminLogins').classList.add('hidden');
+      document.getElementById('panelAdminBackup').classList.add('hidden');
+      document.getElementById('panelAdminSystem').classList.add('hidden');
+      
+      // Aktifkan tab yang dipilih
+      if (tab === 'dashboard') {
+        document.getElementById('tabAdminDashboard').classList.add('active');
+        document.getElementById('panelAdminDashboard').classList.remove('hidden');
+        loadAdminDashboard();
+      } else if (tab === 'users') {
+        document.getElementById('tabAdminUsers').classList.add('active');
+        document.getElementById('panelAdminUsers').classList.remove('hidden');
+        loadAdminUsers();
+      } else if (tab === 'logins') {
+        document.getElementById('tabAdminLogins').classList.add('active');
+        document.getElementById('panelAdminLogins').classList.remove('hidden');
+        showLoginTab('siswa'); // Default ke tab siswa
+      } else if (tab === 'backup') {
+        document.getElementById('tabAdminBackup').classList.add('active');
+        document.getElementById('panelAdminBackup').classList.remove('hidden');
+      } else if (tab === 'system') {
+        document.getElementById('tabAdminSystem').classList.add('active');
+        document.getElementById('panelAdminSystem').classList.remove('hidden');
+        loadSystemInfo();
+      }
+    }
+
+    function loadAdminDashboard() {
+      // Hitung statistik
+      const nilaiData = JSON.parse(localStorage.getItem(KEY_NILAI)) || [];
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      
+      // Hitung total materi
+      let totalMateri = 0;
+      Object.values(materiData).forEach(mapelMateri => {
+        totalMateri += mapelMateri.length;
+      });
+      
+      // Hitung total soal
+      let totalSoal = 0;
+      Object.values(soalData).forEach(mapelSoal => {
+        Object.values(mapelSoal).forEach(materiSoal => {
+          Object.values(materiSoal).forEach(tingkatSoal => {
+            totalSoal += tingkatSoal.length;
+          });
+        });
+      });
+      
+      // Update dashboard
+      document.getElementById('adminTotalNilai').textContent = nilaiData.length;
+      document.getElementById('adminTotalMapel').textContent = mapelData.length;
+      document.getElementById('adminTotalMateri').textContent = totalMateri;
+      document.getElementById('adminTotalSoal').textContent = totalSoal;
+      
+      // Update statistik
+      const statsContent = document.getElementById('adminStatsContent');
+      statsContent.innerHTML = `
+        <p><strong>Total Data Nilai:</strong> ${nilaiData.length} records</p>
+        <p><strong>Total Mata Pelajaran:</strong> ${mapelData.length} mapel</p>
+        <p><strong>Total Materi Pembelajaran:</strong> ${totalMateri} materi</p>
+        <p><strong>Total Bank Soal:</strong> ${totalSoal} soal</p>
+        <p><strong>Ukuran Penyimpanan:</strong> ${calculateStorageSize()} KB</p>
+        <p><strong>Terakhir Diperbarui:</strong> ${new Date().toLocaleString('id-ID')}</p>
+      `;
+    }
+
+    function calculateStorageSize() {
+      let totalSize = 0;
+      for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+          totalSize += localStorage[key].length * 2; // UTF-16 characters use 2 bytes
+        }
+      }
+      return (totalSize / 1024).toFixed(2);
+    }
+
+    function loadAdminUsers() {
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      
+      const usersTable = document.getElementById('adminUsersTable');
+      
+      if (loginSiswaData.length === 0 && loginGuruData.length === 0 && loginAdminData.length === 0) {
+        usersTable.innerHTML = '<tr><td colspan="5" style="text-align:center">Belum ada data pengguna</td></tr>';
+        return;
+      }
+      
+      usersTable.innerHTML = '';
+      
+      // Tambahkan data siswa
+      loginSiswaData.forEach(siswa => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${escapeHtml(siswa.name)}</td>
+          <td><span class="level-badge level-low">Siswa</span></td>
+          <td>${escapeHtml(siswa.nis)}</td>
+          <td>${escapeHtml(siswa.ttl)}</td>
+          <td>
+            <button onclick="adminEditUser('${siswa.nis}')" class="ghost" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+            <button onclick="adminDeleteUser('${siswa.nis}')" class="ghost" style="padding: 4px 8px; font-size: 12px; background: #ff6b6b;">Hapus</button>
+          </td>
+        `;
+        usersTable.appendChild(row);
+      });
+      
+      // Tambahkan data guru
+      loginGuruData.forEach(guru => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${escapeHtml(guru.name)}</td>
+          <td><span class="level-badge level-moderate">Guru</span></td>
+          <td>${escapeHtml(guru.username)}</td>
+          <td>-</td>
+          <td>
+            <button onclick="adminEditUser('${guru.username}')" class="ghost" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+            <button onclick="adminDeleteUser('${guru.username}')" class="ghost" style="padding: 4px 8px; font-size: 12px; background: #ff6b6b;">Hapus</button>
+          </td>
+        `;
+        usersTable.appendChild(row);
+      });
+      
+      // Tambahkan data admin
+      loginAdminData.forEach(admin => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${escapeHtml(admin.name)}</td>
+          <td><span class="level-badge level-hots">Admin</span></td>
+          <td>${escapeHtml(admin.username)}</td>
+          <td>-</td>
+          <td>
+            <button onclick="adminEditUser('${admin.username}')" class="ghost" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+            ${loginAdminData.length > 1 ? `<button onclick="adminDeleteUser('${admin.username}')" class="ghost" style="padding: 4px 8px; font-size: 12px; background: #ff6b6b;">Hapus</button>` : '<button disabled class="ghost" style="padding: 4px 8px; font-size: 12px; background: #ccc;">Hapus</button>'}
+          </td>
+        `;
+        usersTable.appendChild(row);
+      });
+    }
+
+    function adminSearchUsers() {
+      const searchTerm = document.getElementById('adminSearchUsers').value.toLowerCase();
+      const rows = document.getElementById('adminUsersTable').getElementsByTagName('tr');
+      
+      for (let row of rows) {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+      }
+    }
+
+    function adminEditUser(userId) {
+      // Cari data user berdasarkan userId (NIS/username)
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      
+      let user = null;
+      let userType = '';
+      
+      // Cari di data siswa
+      const siswa = loginSiswaData.find(s => s.nis === userId);
+      if (siswa) {
+        user = siswa;
+        userType = 'siswa';
+      }
+      
+      // Cari di data guru
+      if (!user) {
+        const guru = loginGuruData.find(g => g.username === userId);
+        if (guru) {
+          user = guru;
+          userType = 'guru';
+        }
+      }
+      
+      // Cari di data admin
+      if (!user) {
+        const admin = loginAdminData.find(a => a.username === userId);
+        if (admin) {
+          user = admin;
+          userType = 'admin';
+        }
+      }
+      
+      if (!user) {
+        alert('User tidak ditemukan!');
+        return;
+      }
+      
+      // Tampilkan form edit berdasarkan tipe user
+      if (userType === 'siswa') {
+        editSiswaForm(userId);
+      } else if (userType === 'guru') {
+        editGuruForm(userId);
+      } else if (userType === 'admin') {
+        editAdminForm(userId);
+      }
+    }
+
+    function editSiswaForm(userId) {
+      const loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      const siswaIndex = loginSiswaData.findIndex(s => s.nis === userId);
+      
+      if (siswaIndex === -1) {
+        alert('Data siswa tidak ditemukan!');
+        return;
+      }
+      
+      const siswa = loginSiswaData[siswaIndex];
+      
+      // Buat form edit
+      const newName = prompt('Edit nama siswa:', siswa.name);
+      if (newName === null) return;
+      
+      const newNIS = prompt('Edit NIS siswa (7 digit):', siswa.nis);
+      if (newNIS === null) return;
+      
+      if (newNIS.length !== 7 || isNaN(newNIS)) {
+        alert('NIS harus 7 digit angka!');
+        return;
+      }
+      
+      const newTTL = prompt('Edit TTL siswa (YYYY-MM-DD):', siswa.ttl);
+      if (newTTL === null) return;
+      
+      const newGender = prompt('Edit gender siswa (Laki-laki/Perempuan):', siswa.gender);
+      if (newGender === null) return;
+      
+      const newPassword = prompt('Edit password siswa (kosongkan jika tidak ingin mengubah):', siswa.password || '');
+      
+      // Update data
+      siswa.name = newName.trim();
+      siswa.nis = newNIS;
+      siswa.ttl = newTTL;
+      siswa.gender = newGender;
+      if (newPassword !== null && newPassword !== '') {
+        siswa.password = newPassword;
+      }
+      
+      localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(loginSiswaData));
+      alert('Data siswa berhasil diperbarui!');
+      loadAdminUsers();
+    }
+
+    function editGuruForm(userId) {
+      const loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+      const guruIndex = loginGuruData.findIndex(g => g.username === userId);
+      
+      if (guruIndex === -1) {
+        alert('Data guru tidak ditemukan!');
+        return;
+      }
+      
+      const guru = loginGuruData[guruIndex];
+      
+      const newName = prompt('Edit nama guru:', guru.name);
+      if (newName === null) return;
+      
+      const newUsername = prompt('Edit username guru:', guru.username);
+      if (newUsername === null) return;
+      
+      const newPassword = prompt('Edit password guru:', guru.password);
+      if (newPassword === null) return;
+      
+      // Update data
+      guru.name = newName.trim();
+      guru.username = newUsername;
+      guru.password = newPassword;
+      
+      localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(loginGuruData));
+      alert('Data guru berhasil diperbarui!');
+      loadAdminUsers();
+    }
+
+    function editAdminForm(userId) {
+      const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+      const adminIndex = loginAdminData.findIndex(a => a.username === userId);
+      
+      if (adminIndex === -1) {
+        alert('Data admin tidak ditemukan!');
+        return;
+      }
+      
+      const admin = loginAdminData[adminIndex];
+      
+      const newName = prompt('Edit nama admin:', admin.name);
+      if (newName === null) return;
+      
+      const newUsername = prompt('Edit username admin:', admin.username);
+      if (newUsername === null) return;
+      
+      const newPassword = prompt('Edit password admin:', admin.password);
+      if (newPassword === null) return;
+      
+      // Update data
+      admin.name = newName.trim();
+      admin.username = newUsername;
+      admin.password = newPassword;
+      
+      localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(loginAdminData));
+      alert('Data admin berhasil diperbarui!');
+      loadAdminUsers();
+    }
+
+    function adminDeleteUser(userId) {
+      if (!confirm(`Hapus user ${userId}?`)) return;
+      
+      let deleted = false;
+      
+      // Coba hapus dari data siswa
+      let loginSiswaData = JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA)) || [];
+      const siswaIndex = loginSiswaData.findIndex(s => s.nis === userId);
+      if (siswaIndex !== -1) {
+        loginSiswaData.splice(siswaIndex, 1);
+        localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(loginSiswaData));
+        deleted = true;
+      }
+      
+      // Coba hapus dari data guru
+      if (!deleted) {
+        let loginGuruData = JSON.parse(localStorage.getItem(KEY_LOGIN_GURU)) || [];
+        const guruIndex = loginGuruData.findIndex(g => g.username === userId);
+        if (guruIndex !== -1) {
+          loginGuruData.splice(guruIndex, 1);
+          localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(loginGuruData));
+          deleted = true;
+        }
+      }
+      
+      // Coba hapus dari data admin
+      if (!deleted) {
+        let loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+        // Cegah penghapusan admin terakhir
+        if (loginAdminData.length <= 1) {
+          alert('Tidak dapat menghapus admin terakhir!');
+          return;
+        }
+        
+        const adminIndex = loginAdminData.findIndex(a => a.username === userId);
+        if (adminIndex !== -1) {
+          loginAdminData.splice(adminIndex, 1);
+          localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(loginAdminData));
+          deleted = true;
+        }
+      }
+      
+      if (deleted) {
+        alert('User berhasil dihapus!');
+        loadAdminUsers();
+      } else {
+        alert('User tidak ditemukan!');
+      }
+    }
+
+    function adminBackupData() {
+      const backupData = {
+        mapel: JSON.parse(localStorage.getItem(KEY_MAPEL) || '[]'),
+        materi: JSON.parse(localStorage.getItem(KEY_MATERI) || '{}'),
+        soal: JSON.parse(localStorage.getItem(KEY_SOAL) || '{}'),
+        nilai: JSON.parse(localStorage.getItem(KEY_NILAI) || '[]'),
+        pengaturan: JSON.parse(localStorage.getItem(KEY_PENGATURAN) || '{}'),
+        loginSiswa: JSON.parse(localStorage.getItem(KEY_LOGIN_SISWA) || '[]'),
+        loginGuru: JSON.parse(localStorage.getItem(KEY_LOGIN_GURU) || '[]'),
+        loginAdmin: JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN) || '[]'),
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+      };
+      
+      const dataStr = JSON.stringify(backupData, null, 2);
+      const dataBlob = new Blob([dataStr], {type: 'application/json'});
+      
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(dataBlob);
+      link.download = `edukuis-backup-${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+      
+      alert('Backup data berhasil!');
+    }
+
+    function adminRestoreData() {
+      const fileInput = document.getElementById('adminRestoreFile');
+      const file = fileInput.files[0];
+      
+      if (!file) {
+        alert('Pilih file backup terlebih dahulu!');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const backupData = JSON.parse(e.target.result);
+          
+          if (confirm('Yakin ingin restore data? Data saat ini akan digantikan.')) {
+            localStorage.setItem(KEY_MAPEL, JSON.stringify(backupData.mapel || []));
+            localStorage.setItem(KEY_MATERI, JSON.stringify(backupData.materi || {}));
+            localStorage.setItem(KEY_SOAL, JSON.stringify(backupData.soal || {}));
+            localStorage.setItem(KEY_NILAI, JSON.stringify(backupData.nilai || []));
+            localStorage.setItem(KEY_PENGATURAN, JSON.stringify(backupData.pengaturan || {}));
+            localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(backupData.loginSiswa || []));
+            localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(backupData.loginGuru || []));
+            localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(backupData.loginAdmin || []));
+            
+            alert('Restore data berhasil!');
+            loadAdminDashboard();
+          }
+        } catch (error) {
+          alert('Error: File backup tidak valid!');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function adminClearAllData() {
+      if (confirm('Yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan!')) {
+        localStorage.clear();
+        initStorage();
+        alert('Semua data telah dihapus dan direset ke default!');
+        loadAdminDashboard();
+      }
+    }
+
+    function adminResetToDefault() {
+      if (confirm('Reset semua data ke kondisi default?')) {
+        localStorage.setItem(KEY_MAPEL, JSON.stringify(defaultMapel));
+        localStorage.setItem(KEY_MATERI, JSON.stringify(defaultMateri));
+        localStorage.setItem(KEY_SOAL, JSON.stringify(defaultSoal));
+        localStorage.setItem(KEY_NILAI, JSON.stringify([]));
+        localStorage.setItem(KEY_PENGATURAN, JSON.stringify(defaultPengaturan));
+        localStorage.setItem(KEY_LOGIN_SISWA, JSON.stringify(defaultLoginSiswa));
+        localStorage.setItem(KEY_LOGIN_GURU, JSON.stringify(defaultLoginGuru));
+        localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(defaultLoginAdmin));
+        
+        alert('Data berhasil direset ke default!');
+        loadAdminDashboard();
+      }
+    }
+
+    function adminExportAllData() {
+      adminBackupData(); // Sama seperti backup
+    }
+
+    function adminImportData() {
+      document.getElementById('adminRestoreFile').click();
+    }
+
+    function adminResetNilai() {
+      if (confirm('Hapus semua data nilai?')) {
+        localStorage.setItem(KEY_NILAI, JSON.stringify([]));
+        alert('Data nilai telah dihapus!');
+        loadAdminDashboard();
+      }
+    }
+
+    function adminResetSoal() {
+      if (confirm('Reset semua soal ke default?')) {
+        localStorage.setItem(KEY_SOAL, JSON.stringify(defaultSoal));
+        alert('Data soal telah direset!');
+        loadAdminDashboard();
+      }
+    }
+
+    function adminResetAll() {
+      adminResetToDefault();
+    }
+
+    function loadSystemInfo() {
+      const systemInfo = document.getElementById('adminSystemInfo');
+      systemInfo.innerHTML = `
+        <p><strong>Browser:</strong> ${navigator.userAgent}</p>
+        <p><strong>Platform:</strong> ${navigator.platform}</p>
+        <p><strong>Ukuran LocalStorage:</strong> ${calculateStorageSize()} KB</p>
+        <p><strong>Cookies Enabled:</strong> ${navigator.cookieEnabled ? 'Ya' : 'Tidak'}</p>
+        <p><strong>JavaScript Enabled:</strong> Ya</p>
+        <p><strong>Online Status:</strong> ${navigator.onLine ? 'Online' : 'Offline'}</p>
+        <p><strong>Waktu Sistem:</strong> ${new Date().toString()}</p>
+      `;
+    }
+
+    function adminSaveSystemSettings() {
+      const appName = document.getElementById('adminAppName').value;
+      const appVersion = document.getElementById('adminAppVersion').value;
+      
+      // Simpan pengaturan sistem (untuk demo, kita hanya simpan di localStorage)
+      localStorage.setItem('eduquis_app_name', appName);
+      localStorage.setItem('eduquis_app_version', appVersion);
+      
+      alert('Pengaturan sistem berhasil disimpan!');
+    }
+
+    function adminChangePassword() {
+      const newPassword = prompt('Masukkan password admin baru:');
+      if (newPassword && newPassword.length >= 3) {
+        // Perbaikan: Update password admin yang sedang login
+        if (currentAdmin) {
+          const loginAdminData = JSON.parse(localStorage.getItem(KEY_LOGIN_ADMIN)) || [];
+          const adminIndex = loginAdminData.findIndex(a => a.username === currentAdmin.username);
+          
+          if (adminIndex !== -1) {
+            loginAdminData[adminIndex].password = newPassword;
+            localStorage.setItem(KEY_LOGIN_ADMIN, JSON.stringify(loginAdminData));
+            currentAdmin.password = newPassword; // Update juga di currentAdmin
+            alert('Password admin berhasil diubah!');
+          }
+        } else {
+          alert('Tidak dapat mengubah password. Admin tidak terdeteksi.');
+        }
+      } else if (newPassword !== null) {
+        alert('Password harus minimal 3 karakter!');
+      }
+    }
+
+    function adminClearCache() {
+      if (confirm('Bersihkan cache browser?')) {
+        // Hanya clear data aplikasi kita
+        localStorage.removeItem('edukuis_cache');
+        alert('Cache berhasil dibersihkan!');
+      }
+    }
+
+    /* ---------- UTILITIES ---------- */
+    function esc(s){ 
+      if(!s) return ''; 
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); 
+    }
+    
+    function escapeHtml(s){ return esc(s); }
+    
+    function stripHtml(html){ 
+      return html.replace(/<\/?[^>]+(>|$)/g, ""); 
+    }
+    
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    /* ---------- NILAI TABLE FUNCTIONS ---------- */
+    function renderNilaiTable() {
+      const container = document.getElementById('nilaiTableBody');
+      const nilaiData = JSON.parse(localStorage.getItem(KEY_NILAI)) || [];
+      const searchTerm = document.getElementById('searchNilai').value.toLowerCase();
+      
+      container.innerHTML = '';
+      
+      if (nilaiData.length === 0) {
+        container.innerHTML = '<tr><td colspan="12" style="text-align:center">Belum ada data nilai</td></tr>';
+        return;
+      }
+      
+      const filteredData = nilaiData.filter(nilai => 
+        nilai.name.toLowerCase().includes(searchTerm) || 
+        nilai.nis.includes(searchTerm)
+      );
+      
+      if (filteredData.length === 0) {
+        container.innerHTML = '<tr><td colspan="12" style="text-align:center">Tidak ada data yang cocok</td></tr>';
+        return;
+      }
+      
+      filteredData.forEach(nilai => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${escapeHtml(nilai.name)}</td>
+          <td>${escapeHtml(nilai.ttl)}</td>
+          <td>${escapeHtml(nilai.nis)}</td>
+          <td>${escapeHtml(nilai.mapel)}</td>
+          <td>${escapeHtml(nilai.materi)}</td>
+          <td>${escapeHtml(nilai.tingkat)}</td>
+          <td>${escapeHtml(nilai.jumlahSoal)}</td>
+          <td>${escapeHtml(nilai.timerPerSoal)}</td>
+          <td>${escapeHtml(nilai.nilai)}</td>
+          <td>${escapeHtml(nilai.benar)}</td>
+          <td>${escapeHtml(nilai.total)}</td>
+          <td>${escapeHtml(nilai.waktuTersisa)}</td>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function clearAllNilai() {
+      if (confirm('Yakin ingin menghapus semua data nilai?')) {
+        localStorage.setItem(KEY_NILAI, JSON.stringify([]));
+        alert('Semua data nilai telah dihapus');
+        renderNilaiTable();
+      }
+    }
+
+    /* ---------- FUNGSI EKSPOR EXCEL ---------- */
+    function exportNilaiToExcel() {
+      const nilaiData = JSON.parse(localStorage.getItem(KEY_NILAI)) || [];
+      
+      if (nilaiData.length === 0) {
+        alert('Tidak ada data nilai untuk diekspor');
+        return;
+      }
+      
+      // Header untuk Excel
+      const headers = ['Nama', 'TTL', 'NIS', 'Mapel', 'Materi', 'Tingkat', 'Jumlah Soal', 'Timer Per Soal', 'Nilai', 'Benar', 'Total', 'Waktu Tersisa', 'Tanggal'];
+      
+      // Data untuk Excel
+      const excelData = nilaiData.map(nilai => [
+        nilai.name,
+        nilai.ttl,
+        nilai.nis,
+        nilai.mapel,
+        nilai.materi,
+        nilai.tingkat,
+        nilai.jumlahSoal,
+        nilai.timerPerSoal,
+        nilai.nilai,
+        nilai.benar,
+        nilai.total,
+        nilai.waktuTersisa,
+        new Date(nilai.tanggal).toLocaleDateString('id-ID')
+      ]);
+      
+      // Buat worksheet
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...excelData]);
+      
+      // Buat workbook dan tambahkan worksheet
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Data Nilai');
+      
+      // Ekspor ke file
+      XLSX.writeFile(wb, 'Data_Nilai_Edukuis.xlsx');
+      alert('Data nilai berhasil diekspor ke Excel!');
+    }
+
+    function exportMateriToExcel() {
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      
+      if (Object.keys(materiData).length === 0) {
+        alert('Tidak ada data materi untuk diekspor');
+        return;
+      }
+      
+      const headers = ['Mata Pelajaran', 'Judul Materi', 'Ringkasan', 'Status', 'ID Materi'];
+      const excelData = [];
+      
+      mapelData.forEach(mapel => {
+        const mapelMateri = materiData[mapel.id] || [];
+        mapelMateri.forEach(materi => {
+          excelData.push([
+            mapel.name,
+            materi.title,
+            materi.summary,
+            materi.status === 'active' ? 'Aktif' : 'Nonaktif',
+            materi.id
+          ]);
+        });
+      });
+      
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...excelData]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Data Materi');
+      XLSX.writeFile(wb, 'Data_Materi_Edukuis.xlsx');
+      alert('Data materi berhasil diekspor ke Excel!');
+    }
+
+    function exportSoalToExcel() {
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      
+      if (Object.keys(soalData).length === 0) {
+        alert('Tidak ada data soal untuk diekspor');
+        return;
+      }
+      
+      const headers = ['Mata Pelajaran', 'Materi', 'Tingkat', 'Pertanyaan', 'Opsi A', 'Opsi B', 'Opsi C', 'Opsi D', 'Jawaban Benar'];
+      const excelData = [];
+      
+      mapelData.forEach(mapel => {
+        const mapelSoal = soalData[mapel.id] || {};
+        Object.keys(mapelSoal).forEach(materiId => {
+          const materiSoal = mapelSoal[materiId] || {};
+          Object.keys(materiSoal).forEach(tingkat => {
+            const tingkatSoal = materiSoal[tingkat] || [];
+            tingkatSoal.forEach(soal => {
+              const materi = (materiData[mapel.id] || []).find(m => m.id === materiId);
+              const materiName = materi ? materi.title : materiId;
+              
+              excelData.push([
+                mapel.name,
+                materiName,
+                tingkat,
+                soal.q,
+                soal.options[0] || '',
+                soal.options[1] || '',
+                soal.options[2] || '',
+                soal.options[3] || '',
+                String.fromCharCode(65 + soal.answer)
+              ]);
+            });
+          });
+        });
+      });
+      
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...excelData]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Data Soal');
+      XLSX.writeFile(wb, 'Data_Soal_Edukuis.xlsx');
+      alert('Data soal berhasil diekspor ke Excel!');
+    }
+
+    function exportAllToExcel() {
+      // Ekspor semua data ke satu file Excel dengan multiple sheets
+      const wb = XLSX.utils.book_new();
+      
+      // Sheet Nilai
+      const nilaiData = JSON.parse(localStorage.getItem(KEY_NILAI)) || [];
+      if (nilaiData.length > 0) {
+        const headers = ['Nama', 'TTL', 'NIS', 'Mapel', 'Materi', 'Tingkat', 'Jumlah Soal', 'Timer Per Soal', 'Nilai', 'Benar', 'Total', 'Waktu Tersisa', 'Tanggal'];
+        const excelData = nilaiData.map(nilai => [
+          nilai.name, nilai.ttl, nilai.nis, nilai.mapel, nilai.materi, nilai.tingkat,
+          nilai.jumlahSoal, nilai.timerPerSoal, nilai.nilai, nilai.benar, nilai.total,
+          nilai.waktuTersisa, new Date(nilai.tanggal).toLocaleDateString('id-ID')
+        ]);
+        const wsNilai = XLSX.utils.aoa_to_sheet([headers, ...excelData]);
+        XLSX.utils.book_append_sheet(wb, wsNilai, 'Data Nilai');
+      }
+      
+      // Sheet Materi
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      if (Object.keys(materiData).length > 0) {
+        const headers = ['Mata Pelajaran', 'Judul Materi', 'Ringkasan', 'Status', 'ID Materi'];
+        const excelData = [];
+        mapelData.forEach(mapel => {
+          const mapelMateri = materiData[mapel.id] || [];
+          mapelMateri.forEach(materi => {
+            excelData.push([mapel.name, materi.title, materi.summary, materi.status === 'active' ? 'Aktif' : 'Nonaktif', materi.id]);
+          });
+        });
+        const wsMateri = XLSX.utils.aoa_to_sheet([headers, ...excelData]);
+        XLSX.utils.book_append_sheet(wb, wsMateri, 'Data Materi');
+      }
+      
+      // Sheet Soal
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      if (Object.keys(soalData).length > 0) {
+        const headers = ['Mata Pelajaran', 'Materi', 'Tingkat', 'Pertanyaan', 'Opsi A', 'Opsi B', 'Opsi C', 'Opsi D', 'Jawaban Benar'];
+        const excelData = [];
+        mapelData.forEach(mapel => {
+          const mapelSoal = soalData[mapel.id] || {};
+          Object.keys(mapelSoal).forEach(materiId => {
+            const materiSoal = mapelSoal[materiId] || {};
+            Object.keys(materiSoal).forEach(tingkat => {
+              const tingkatSoal = materiSoal[tingkat] || [];
+              tingkatSoal.forEach(soal => {
+                const materi = (materiData[mapel.id] || []).find(m => m.id === materiId);
+                const materiName = materi ? materi.title : materiId;
+                excelData.push([
+                  mapel.name, materiName, tingkat, soal.q,
+                  soal.options[0] || '', soal.options[1] || '', soal.options[2] || '', soal.options[3] || '',
+                  String.fromCharCode(65 + soal.answer)
+                ]);
+              });
+            });
+          });
+        });
+        const wsSoal = XLSX.utils.aoa_to_sheet([headers, ...excelData]);
+        XLSX.utils.book_append_sheet(wb, wsSoal, 'Data Soal');
+      }
+      
+      XLSX.writeFile(wb, 'Data_Lengkap_Edukuis.xlsx');
+      alert('Semua data berhasil diekspor ke Excel!');
+    }
+
+    function previewNilaiExcel() {
+      const preview = document.getElementById('nilaiPreview');
+      const table = document.getElementById('nilaiExcelPreview');
+      const nilaiData = JSON.parse(localStorage.getItem(KEY_NILAI)) || [];
+      
+      if (nilaiData.length === 0) {
+        alert('Tidak ada data nilai untuk dipreview');
+        return;
+      }
+      
+      table.innerHTML = '';
+      
+      // Header
+      const headerRow = document.createElement('tr');
+      ['Nama', 'TTL', 'NIS', 'Mapel', 'Materi', 'Tingkat', 'Jumlah Soal', 'Timer', 'Nilai', 'Benar', 'Total', 'Waktu Tersisa'].forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+      
+      // Data
+      nilaiData.slice(0, 10).forEach(nilai => { // Tampilkan maksimal 10 baris untuk preview
+        const row = document.createElement('tr');
+        [
+          nilai.name, nilai.ttl, nilai.nis, nilai.mapel, nilai.materi, nilai.tingkat,
+          nilai.jumlahSoal, nilai.timerPerSoal, nilai.nilai, nilai.benar, nilai.total, nilai.waktuTersisa
+        ].forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          row.appendChild(td);
+        });
+        table.appendChild(row);
+      });
+      
+      preview.classList.remove('hidden');
+    }
+
+    function previewMateriExcel() {
+      const preview = document.getElementById('materiPreview');
+      const table = document.getElementById('materiExcelPreview');
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      
+      if (Object.keys(materiData).length === 0) {
+        alert('Tidak ada data materi untuk dipreview');
+        return;
+      }
+      
+      table.innerHTML = '';
+      
+      // Header
+      const headerRow = document.createElement('tr');
+      ['Mata Pelajaran', 'Judul Materi', 'Ringkasan', 'Status'].forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+      
+      // Data
+      let count = 0;
+      mapelData.forEach(mapel => {
+        const mapelMateri = materiData[mapel.id] || [];
+        mapelMateri.forEach(materi => {
+          if (count < 10) { // Tampilkan maksimal 10 baris untuk preview
+            const row = document.createElement('tr');
+            [
+              mapel.name,
+              materi.title,
+              materi.summary.substring(0, 50) + (materi.summary.length > 50 ? '...' : ''),
+              materi.status === 'active' ? 'Aktif' : 'Nonaktif'
+            ].forEach(cell => {
+              const td = document.createElement('td');
+              td.textContent = cell;
+              row.appendChild(td);
+            });
+            table.appendChild(row);
+            count++;
+          }
+        });
+      });
+      
+      preview.classList.remove('hidden');
+    }
+
+    function previewSoalExcel() {
+      const preview = document.getElementById('soalPreview');
+      const table = document.getElementById('soalExcelPreview');
+      const soalData = JSON.parse(localStorage.getItem(KEY_SOAL)) || {};
+      const mapelData = JSON.parse(localStorage.getItem(KEY_MAPEL)) || [];
+      const materiData = JSON.parse(localStorage.getItem(KEY_MATERI)) || {};
+      
+      if (Object.keys(soalData).length === 0) {
+        alert('Tidak ada data soal untuk dipreview');
+        return;
+      }
+      
+      table.innerHTML = '';
+      
+      // Header
+      const headerRow = document.createElement('tr');
+      ['Mapel', 'Materi', 'Tingkat', 'Pertanyaan', 'Jawaban Benar'].forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+      
+      // Data
+      let count = 0;
+      mapelData.forEach(mapel => {
+        const mapelSoal = soalData[mapel.id] || {};
+        Object.keys(mapelSoal).forEach(materiId => {
+          const materiSoal = mapelSoal[materiId] || {};
+          Object.keys(materiSoal).forEach(tingkat => {
+            const tingkatSoal = materiSoal[tingkat] || [];
+            tingkatSoal.forEach(soal => {
+              if (count < 10) { // Tampilkan maksimal 10 baris untuk preview
+                const materi = (materiData[mapel.id] || []).find(m => m.id === materiId);
+                const materiName = materi ? materi.title : materiId;
+                
+                const row = document.createElement('tr');
+                [
+                  mapel.name,
+                  materiName,
+                  tingkat,
+                  soal.q.substring(0, 30) + (soal.q.length > 30 ? '...' : ''),
+                  String.fromCharCode(65 + soal.answer)
+                ].forEach(cell => {
+                  const td = document.createElement('td');
+                  td.textContent = cell;
+                  row.appendChild(td);
+                });
+                table.appendChild(row);
+                count++;
+              }
+            });
+          });
+        });
+      });
+      
+      preview.classList.remove('hidden');
+    }
+
+    /* ---------- expose functions for inline onclick ---------- */
+    window.showSection = showSection;
+    window.loginSiswa = loginSiswa;
+    window.loginGuru = loginGuru;
+    window.logoutGuru = logoutGuru;
+    window.showGuruTab = showGuruTab;
+    window.showAddMateriForm = showAddMateriForm;
+    window.editMateri = editMateri;
+    window.closeMateriModal = closeMateriModal;
+    window.deleteMateri = deleteMateri;
+    window.pilihMapelForMateri = pilihMapelForMateri;
+    window.backToMapelList = backToMapelList;
+    window.showAddMapelForm = showAddMapelForm;
+    window.editMapel = editMapel;
+    window.closeMapelModal = closeMapelModal;
+    window.deleteMapel = deleteMapel;
+    window.showAddSoalForm = showAddSoalForm;
+    window.editSoal = editSoal;
+    window.closeSoalModal = closeSoalModal;
+    window.deleteSoal = deleteSoal;
+    window.addJumlahSoal = addJumlahSoal;
+    window.editJumlahSoal = editJumlahSoal;
+    window.deleteJumlahSoal = deleteJumlahSoal;
+    window.addWaktuSoal = addWaktuSoal;
+    window.editWaktuSoal = editWaktuSoal;
+    window.deleteWaktuSoal = deleteWaktuSoal;
+    window.addTingkat = addTingkat;
+    window.editTingkat = editTingkat;
+    window.deleteTingkat = deleteTingkat;
+    window.saveAllPengaturan = saveAllPengaturan;
+    window.resetAllPengaturan = resetAllPengaturan;
+    window.loadSoalList = loadSoalList;
+    window.loadMateriForSoal = loadMateriForSoal;
+    window.loadTingkatForSoal = loadTingkatForSoal;
+    window.validateName = validateName;
+    window.openMapel = openMapel;
+    window.openMaterial = openMaterial;
+    window.startQuiz = startQuiz;
+    window.skipQuestion = skipQuestion;
+    window.endQuizEarly = endQuizEarly;
+    window.clearAllNilai = clearAllNilai;
+    window.renderNilaiTable = renderNilaiTable;
+    window.renderMapelGrid = renderMapelGrid;
+    window.changeBackgroundColor = changeBackgroundColor;
+    window.applyCustomColor = applyCustomColor;
+    window.toggleSettings = toggleSettings;
+    window.addOpsi = addOpsi;
+    window.removeOpsi = removeOpsi;
+    window.removeSpecificOpsi = removeSpecificOpsi;
+    window.exportNilaiToExcel = exportNilaiToExcel;
+    window.exportMateriToExcel = exportMateriToExcel;
+    window.exportSoalToExcel = exportSoalToExcel;
+    window.exportAllToExcel = exportAllToExcel;
+    window.previewNilaiExcel = previewNilaiExcel;
+    window.previewMateriExcel = previewMateriExcel;
+    window.previewSoalExcel = previewSoalExcel;
+    window.loginAdmin = loginAdmin;
+    window.logoutAdmin = logoutAdmin;
+    window.showAdminTab = showAdminTab;
+    window.loadAdminDashboard = loadAdminDashboard;
+    window.loadAdminUsers = loadAdminUsers;
+    window.adminSearchUsers = adminSearchUsers;
+    window.adminBackupData = adminBackupData;
+    window.adminRestoreData = adminRestoreData;
+    window.adminClearAllData = adminClearAllData;
+    window.adminResetToDefault = adminResetToDefault;
+    window.adminExportAllData = adminExportAllData;
+    window.adminImportData = adminImportData;
+    window.adminResetNilai = adminResetNilai;
+    window.adminResetSoal = adminResetSoal;
+    window.adminResetAll = adminResetAll;
+    window.loadSystemInfo = loadSystemInfo;
+    window.adminSaveSystemSettings = adminSaveSystemSettings;
+    window.adminChangePassword = adminChangePassword;
+    window.adminClearCache = adminClearCache;
+    window.adminEditUser = adminEditUser;
+    window.adminDeleteUser = adminDeleteUser;
+
+    // Fungsi baru untuk kelola login
+    window.showLoginTab = showLoginTab;
+    window.addNewSiswa = addNewSiswa;
+    window.addNewGuru = addNewGuru;
+    window.addNewAdmin = addNewAdmin;
+    window.editSiswa = editSiswa;
+    window.editGuru = editGuru;
+    window.editAdmin = editAdmin;
+    window.deleteSiswa = deleteSiswa;
+    window.deleteGuru = deleteGuru;
+    window.deleteAdmin = deleteAdmin;
+
+    /* ---------- initial render ---------- */
+    showSection('logoPage');
+    loadBackgroundColor();
+  </script>
+</body>
+</html>
